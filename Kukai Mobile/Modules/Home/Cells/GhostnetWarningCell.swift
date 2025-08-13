@@ -18,6 +18,6 @@ class GhostnetWarningCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		titleLbl.text = "\(DependencyManager.NetworkManagement.name() ?? "")   Test Only"
+		titleLbl.text = "\(DependencyManager.NetworkManagement.currentNetworkDisplayName())   Test Only"
 	}
 }

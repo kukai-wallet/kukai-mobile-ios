@@ -98,18 +98,4 @@ class CollectiblesFavouritesViewController: UIViewController, UICollectionViewDe
 			delegate?.performSegue(withIdentifier: "detail", sender: obj)
 		}
 	}
-	
-	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		if let c = cell as? CollectiblesCollectionLargeCell, let url = viewModel.willDisplayImages(forIndexPath: indexPath).first {
-			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
-		}
-	}
-	
-	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		guard let cell = cell as? UITableViewCellImageDownloading else {
-			return
-		}
-		
-		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
-	}
 }

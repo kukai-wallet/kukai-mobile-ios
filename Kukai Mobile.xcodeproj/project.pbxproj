@@ -187,6 +187,7 @@
 		C055EF1C2A2F85B60031CB5F /* CurrencyChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C055EF1B2A2F85B60031CB5F /* CurrencyChoiceCell.swift */; };
 		C055EF1E2A2F95310031CB5F /* ShowQRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C055EF1D2A2F95310031CB5F /* ShowQRViewController.swift */; };
 		C055EF212A2F95ED0031CB5F /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = C055EF202A2F95ED0031CB5F /* QRCode */; };
+		C05737E82E37B6DE0031446E /* ReadWriteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05737E72E37B6D50031446E /* ReadWriteCoordinator.swift */; };
 		C057CF622AB0BC0900E82D41 /* UIDevice+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C057CF612AB0BC0900E82D41 /* UIDevice+extensions.swift */; };
 		C057E3882BE2D03700189234 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C057E3872BE2D03700189234 /* CustomNavigationController.swift */; };
 		C05848A8280EF5CC007933CA /* ThemePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05848A7280EF5CC007933CA /* ThemePickerViewController.swift */; };
@@ -364,7 +365,6 @@
 		C0D01CF329AE4A82007A2468 /* WalletConnectService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D01CF229AE4A82007A2468 /* WalletConnectService.swift */; };
 		C0D190102A0506D8002B5DB8 /* CollectiblesCollectionLargeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D1900E2A0506D8002B5DB8 /* CollectiblesCollectionLargeCell.swift */; };
 		C0D190112A0506D8002B5DB8 /* CollectiblesCollectionLargeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0D1900F2A0506D8002B5DB8 /* CollectiblesCollectionLargeCell.xib */; };
-		C0D383B02941F3C900F036E1 /* UITableViewCell+gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D383AF2941F3C900F036E1 /* UITableViewCell+gradient.swift */; };
 		C0D5C7622AFA575B00583CA7 /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D5C7612AFA575B00583CA7 /* StringTests.swift */; };
 		C0D6A9342955C231002BE8DA /* SendAddressType.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0D6A9332955C231002BE8DA /* SendAddressType.storyboard */; };
 		C0D6A9362955C510002BE8DA /* AddressTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6A9352955C510002BE8DA /* AddressTypeCell.swift */; };
@@ -635,6 +635,7 @@
 		C055EF192A2F77F00031CB5F /* NetworkChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkChoiceCell.swift; sourceTree = "<group>"; };
 		C055EF1B2A2F85B60031CB5F /* CurrencyChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyChoiceCell.swift; sourceTree = "<group>"; };
 		C055EF1D2A2F95310031CB5F /* ShowQRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowQRViewController.swift; sourceTree = "<group>"; };
+		C05737E72E37B6D50031446E /* ReadWriteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteCoordinator.swift; sourceTree = "<group>"; };
 		C057CF612AB0BC0900E82D41 /* UIDevice+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+extensions.swift"; sourceTree = "<group>"; };
 		C057E3872BE2D03700189234 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		C05848A7280EF5CC007933CA /* ThemePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerViewController.swift; sourceTree = "<group>"; };
@@ -821,7 +822,6 @@
 		C0D01CF229AE4A82007A2468 /* WalletConnectService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectService.swift; sourceTree = "<group>"; };
 		C0D1900E2A0506D8002B5DB8 /* CollectiblesCollectionLargeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesCollectionLargeCell.swift; sourceTree = "<group>"; };
 		C0D1900F2A0506D8002B5DB8 /* CollectiblesCollectionLargeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectiblesCollectionLargeCell.xib; sourceTree = "<group>"; };
-		C0D383AF2941F3C900F036E1 /* UITableViewCell+gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+gradient.swift"; sourceTree = "<group>"; };
 		C0D5C7612AFA575B00583CA7 /* StringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
 		C0D6A9332955C231002BE8DA /* SendAddressType.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SendAddressType.storyboard; sourceTree = "<group>"; };
 		C0D6A9352955C510002BE8DA /* AddressTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTypeCell.swift; sourceTree = "<group>"; };
@@ -1154,7 +1154,6 @@
 		C049B5AD26A0799300F1C5E0 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				C0D383AF2941F3C900F036E1 /* UITableViewCell+gradient.swift */,
 				C049B5AE26A079AF00F1C5E0 /* UIViewController+extensions.swift */,
 				C049B5B826A084A500F1C5E0 /* UIView+extensions.swift */,
 				C08462402919204800B7D62D /* UIView+gradients.swift */,
@@ -2282,7 +2281,6 @@
 				C0EA19DA29096E4600E6B40D /* CollectibleDetailDescriptionCell.swift in Sources */,
 				C06E0D63287C3E50007A580B /* WalletConnectPairViewController.swift in Sources */,
 				C001D5AE2A027ED60089EC7A /* CollectiblesRecentsViewModel.swift in Sources */,
-				C0D383B02941F3C900F036E1 /* UITableViewCell+gradient.swift in Sources */,
 				C0CB6AC32948ED4300E7B4DF /* FreeformValidator.swift in Sources */,
 				C039C3BB298BD75600112500 /* BottomSheetVariableSegue.swift in Sources */,
 				C0EA19D629096E3200E6B40D /* CollectibleDetailSendCell.swift in Sources */,
@@ -2458,6 +2456,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2527,6 +2526,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2562,9 +2562,8 @@
 				CODE_SIGN_ENTITLEMENTS = "Kukai Mobile/Kukai Mobile-dev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 399;
+				CURRENT_PROJECT_VERSION = 420;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
 				IBSC_WARNINGS = YES;
@@ -2606,8 +2605,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 399;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				CURRENT_PROJECT_VERSION = 420;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
 				IBSC_WARNINGS = YES;
@@ -2641,7 +2640,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2662,7 +2660,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2682,7 +2679,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileUITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2702,7 +2698,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileUITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2756,6 +2751,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2792,8 +2788,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 399;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				CURRENT_PROJECT_VERSION = 420;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = "BETA=1";
@@ -2829,7 +2825,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2849,7 +2844,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileUITests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (

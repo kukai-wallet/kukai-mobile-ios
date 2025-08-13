@@ -42,12 +42,13 @@ class TokenDetailsBakerCell: UITableViewCell {
 		bakerButton.customCornerRadius = 6
 		learnButton.customCornerRadius = 6
 		
-		bakerButton.isEnabled = !data.bakerChangeDisabled
+		//bakerButton.isEnabled = !data.bakerChangeDisabled
 		bakerButton.accessibilityIdentifier = "baker-edit-button"
 		
 		if let bakerName = data.bakerName {
 			
 			// If we have baker data
+			bakerIcon.backgroundColor = .white
 			MediaProxyService.load(url: data.bakerIcon, to: bakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 			
 			bakerButton.setTitle("Change Baker", for: .normal)

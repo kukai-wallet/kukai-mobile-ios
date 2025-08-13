@@ -9,7 +9,6 @@ import UIKit
 import KukaiCoreSwift
 import Sentry
 import os.log
-import Network // TODO: remove when xcode beta bug fixed
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,8 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	 With `NSFileProtectionComplete` turned on, values are unreadable inside xxxLaunchingWithOptions. This may result in booleans being returned as false simply because they can't be read, which can lead to broken cache logic
 	 */
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-		nw_tls_create_options() // TODO: Remove when xcode beta bug fixed
-		
 		setupTheme()
 		
 		#if targetEnvironment(simulator)
@@ -57,8 +54,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 					
 					event.message = SentryMessage(formatted: newTitle)
 					event.fingerprint = [newTitle]
+					
 				}
-			
+				else if (event.exceptions?.first?.type == "HTTPClientError") {
+					// We get lots of HTTP 500's while running the app. Its important to track what issues users are facing, but it causes a lot of nosie from the simualtor while testing
+					#if targetEnvironment(simulator)
+						return nil
+					#endif
+				}
+				
 				return event
 			}
 		}
@@ -66,7 +70,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// Setup any necessary settings, such as RAM limits
 		MediaProxyService.setupImageLibrary()
-		
 		
 		// process special arguments coming from XCUITest to do things like show keyboard and reset app data
 		processXCUITestArguments()

@@ -75,27 +75,33 @@ class ExperimentalNetworkViewController: UIViewController {
 		
 		nodeClient?.getNetworkInformation(completion: { [weak self] success, error in
 			if let err = error {
-				self?.windowError(withTitle: "error".localized(), description: "Unable to fetch network information from node: \(err)")
-				self?.hideLoadingView()
-				completion(false)
+				DispatchQueue.main.async { [weak self] in
+					self?.windowError(withTitle: "error".localized(), description: "Unable to fetch network information from node: \(err)")
+					self?.hideLoadingView()
+					completion(false)
+				}
 				
 			} else if (self?.tzktAPITextfield.text?.count ?? 0) > 0, let nodeClient = self?.nodeClient {
 				self?.tzktClient = TzKTClient(networkService: nodeClient.networkService, config: config, dipDupClient: DipDupClient(networkService: nodeClient.networkService, config: config))
 				self?.tzktClient?.cycles(completion: { result in
-					self?.hideLoadingView()
-					
-					guard let _ = try? result.get() else {
-						self?.windowError(withTitle: "error".localized(), description: "TzKT API test failed: \(result.getFailure())")
-						completion(false)
-						return
+					DispatchQueue.main.async { [weak self] in
+						self?.hideLoadingView()
+						
+						guard let _ = try? result.get() else {
+							self?.windowError(withTitle: "error".localized(), description: "TzKT API test failed: \(result.getFailure())")
+							completion(false)
+							return
+						}
+						
+						completion(true)
 					}
-					
-					completion(true)
 				})
 				
 			} else {
-				self?.hideLoadingView()
-				completion(true)
+				DispatchQueue.main.async { [weak self] in
+					self?.hideLoadingView()
+					completion(true)
+				}
 			}
 		})
 	}

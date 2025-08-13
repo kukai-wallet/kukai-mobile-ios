@@ -82,6 +82,10 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.titleLabel.text = obj.title
 				cell.descriptionLabel.text = obj.description
 				
+				if let url = self?.willDisplayImage(forIndexPath: indexPath) {
+					MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
+				}
+				
 				return cell
 				
 			} else if let _ = item.base as? ShowMore, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverShowMoreCell", for: indexPath) as? DiscoverShowMoreCell {
@@ -107,21 +111,23 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
-		guard let ds = dataSource else {
-			state = .failure(KukaiError.unknown(withString: "Unable to locate data source"), "Unable to locate data source")
-			return
-		}
-		
-		DependencyManager.shared.discoverService.fetchItems { result in
-			guard let _ = try? result.get() else {
-				self.state = .failure(result.getFailure(), "Unable to fetch Discover items, try again")
+		DispatchQueue.global(qos: .background).async { [weak self] in
+			guard let ds = self?.dataSource else {
+				DispatchQueue.main.async { [weak self] in self?.state = .failure(KukaiError.unknown(withString: "Unable to locate data source"), "Unable to locate data source") }
 				return
 			}
 			
-			self.reloadData(animate: animate, datasource: ds)
-			
-			// Return success
-			DispatchQueue.main.async { self.state = .success(nil) }
+			DependencyManager.shared.discoverService.fetchItems { result in
+				guard let _ = try? result.get() else {
+					DispatchQueue.main.async { [weak self] in self?.state = .failure(result.getFailure(), "Unable to fetch Discover items, try again") }
+					return
+				}
+				
+				self?.reloadData(animate: animate, datasource: ds)
+				
+				// Return success
+				DispatchQueue.main.async { [weak self] in self?.state = .success(nil) }
+			}
 		}
 	}
 	
@@ -136,7 +142,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		if groups.count == 0 { return }
 		
 		
-		if DependencyManager.shared.currentNetworkType == .ghostnet {
+		if DependencyManager.shared.currentNetworkType != .mainnet {
 			currentSnapshot.appendSections(Array(0..<groups.count))
 			currentSnapshot.appendItems([.init(GhostnetWarningCellObj()), .init(menu), .init(groups[0])], toSection: 0)
 			

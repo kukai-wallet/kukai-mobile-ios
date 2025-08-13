@@ -63,6 +63,11 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		super.viewWillAppear(animated)
 		viewModel.isPresentedForSelectingToken = (self.parent != nil && self.tabBarController == nil)
 		viewModel.isVisible = true
+		
+		if DependencyManager.shared.currencyChanged {
+			viewModel.forceRefresh = true
+		}
+		
 		viewModel.refresh(animate: false)
 	}
 	
@@ -117,33 +122,6 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		}
 	}
 	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		guard let token = viewModel.token(atIndexPath: indexPath) else {
-			return
-		}
-		
-		if let c = cell as? TokenBalanceCell {
-			if token.isXTZ() {
-				c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
-			} else {
-				c.iconView.backgroundColor = .colorNamed("BG4")
-				MediaProxyService.load(url: token.thumbnailURL, to: c.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken()) { res in
-					c.iconView.backgroundColor = .white
-				}
-			}
-		} else if let c = cell as? TezAndStakeCell {
-			c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
-		}
-	}
-	
-	func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		guard let cell = cell as? UITableViewCellImageDownloading else {
-			return
-		}
-		
-		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
-	}
-	
 	func menuVCForBalancesMore() -> MenuViewController {
 		let actions: [UIAction] = [
 			UIAction(title: "Favorites", image: UIImage(named: "FavoritesOn")?.resizedImage(size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
@@ -195,6 +173,7 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 extension AccountViewController: AccountViewModelPopups {
 	
 	func unstakePreformed() {
-		self.performSegue(withIdentifier: "unstake-reminder", sender: nil)
+		// TODO: removing for now as this feature is set to change in next protocol version
+		//self.performSegue(withIdentifier: "unstake-reminder", sender: nil)
 	}
 }

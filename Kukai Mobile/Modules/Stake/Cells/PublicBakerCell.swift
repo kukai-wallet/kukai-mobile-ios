@@ -9,7 +9,7 @@ import UIKit
 import KukaiCoreSwift
 import SDWebImage
 
-class PublicBakerCell: UITableViewCell, UITableViewCellImageDownloading {
+class PublicBakerCell: UITableViewCell {
 	
 	@IBOutlet weak var bakerIcon: SDAnimatedImageView!
 	@IBOutlet weak var bakerNameLabel: UILabel!
@@ -28,6 +28,7 @@ class PublicBakerCell: UITableViewCell, UITableViewCellImageDownloading {
 	}
 	
 	public func setup(withBaker baker: TzKTBaker) {
+		bakerIcon.backgroundColor = .white
 		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
 		
@@ -66,7 +67,8 @@ class PublicBakerCell: UITableViewCell, UITableViewCellImageDownloading {
 		bakerNameLabel.accessibilityIdentifier = "baker-list-name"
 	}
 	
-	func downloadingImageViews() -> [SDAnimatedImageView] {
-		return [bakerIcon]
+	override func prepareForReuse() {
+		bakerIcon.sd_cancelCurrentImageLoad()
+		bakerIcon.image = nil
 	}
 }

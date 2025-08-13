@@ -118,9 +118,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					self?.refresh(animate: true)
 				}
 				
+				// TODO: removing for now as this feature is set to change in next protocol version
+				/*
 				if TransactionService.shared.didUnstake && DependencyManager.shared.activityService.pendingTransactionGroups.count == 0 {
 					self?.popupDelegate?.unstakePreformed()
 				}
+				*/
 			}.store(in: &bag)
 		
 		AccountViewModel.setupAccountActivityListener()
@@ -160,6 +163,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.symbolLabel.text = "XTZ"
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces, allowNegative: false)
 				cell.favCorner.isHidden = false
+				cell.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
 				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
 				
 				let totalXtzValue = amount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
@@ -171,6 +175,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.topBalanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.xtz.toNormalisedDecimal() ?? 0, decimalPlaces: obj.xtz.decimalPlaces, allowNegative: false)
 				cell.bottomBalanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.stake.toNormalisedDecimal() ?? 0, decimalPlaces: obj.stake.decimalPlaces, allowNegative: false)
 				cell.favCorner.isHidden = false
+				cell.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
 				
 				let totalXtzValue = obj.xtz * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 				cell.topValuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
@@ -189,6 +194,13 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.favCorner.isHidden = !token.isFavourite
 				cell.symbolLabel.text = symbol
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces, allowNegative: false)
+				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, withCacheType: .permanent, fallback: UIImage.unknownGroup()) { res in
+					if res != nil {
+						cell.iconView.backgroundColor = .white
+					} else {
+						cell.iconView.backgroundColor = .colorNamed("BG4")
+					}
+				}
 				// cell.setPriceChange(value: Decimal(Int.random(in: -100..<100))) // Will be re-added when we have the actual values
 				
 				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRateCoordinator.read({ DependencyManager.shared.balanceService.tokenValueAndRate[token.id] }) {
@@ -247,56 +259,62 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
-		guard let ds = dataSource else {
-			return
-		}
-		
-		let metadata = DependencyManager.shared.selectedWalletMetadata
-		let parentMetadata = metadata?.isChild == true ? DependencyManager.shared.walletList.parentMetadata(forChildAddress: metadata?.address ?? "") : nil
-		let isTestnet = DependencyManager.shared.currentNetworkType != .mainnet
-		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
-		var data: [AnyHashableSendable] = []
-		
-		if isTestnet {
-			data.append(.init(GhostnetWarningCellObj()))
-		}
-		
-		// If initial load, display shimmer views
-		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-		let balanceService = DependencyManager.shared.balanceService
-		if balanceService.hasBeenFetched(forAddress: selectedAddress), !balanceService.isCacheLoadingInProgress() {
-			if isEmptyAccount() {
-				data = handleRefreshForNewUser(startingData: data, metadata: metadata)
-				
-			} else {
-				data = handleRefreshForRegularUser(startingData: data, metadata: metadata, parentMetadata: parentMetadata, selectedAddress: selectedAddress)
+		DispatchQueue.global(qos: .background).async { [weak self] in
+			guard let ds = self?.dataSource else {
+				return
 			}
 			
-		} else {
-			let hashableData: [AnyHashableSendable] = [
-				.init(balancesMenuVC),
-				.init(TotalEstimatedValue(tez: XTZAmount(fromNormalisedAmount: -1), value: "")),
-				.init(LoadingContainerCellObject()),
-				.init(LoadingContainerCellObject()),
-				.init(LoadingContainerCellObject())
-			]
+			let metadata = DependencyManager.shared.selectedWalletMetadata
+			let parentMetadata = metadata?.isChild == true ? DependencyManager.shared.walletList.parentMetadata(forChildAddress: metadata?.address ?? "") : nil
+			let isTestnet = DependencyManager.shared.currentNetworkType != .mainnet
+			var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+			var data: [AnyHashableSendable] = []
 			
-			data.append(contentsOf: hashableData)
+			if isTestnet {
+				data.append(.init(GhostnetWarningCellObj()))
+			}
+			
+			// If initial load, display shimmer views
+			let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+			let balanceService = DependencyManager.shared.balanceService
+			if balanceService.hasBeenFetched(forAddress: selectedAddress), !balanceService.isCacheLoadingInProgress() {
+				if self?.isEmptyAccount() == true {
+					data = self?.handleRefreshForNewUser(startingData: data, metadata: metadata) ?? []
+					
+				} else {
+					data = self?.handleRefreshForRegularUser(startingData: data, metadata: metadata, parentMetadata: parentMetadata, selectedAddress: selectedAddress) ?? []
+				}
+				
+			} else {
+				let hashableData: [AnyHashableSendable] = [
+					.init(self?.balancesMenuVC),
+					.init(TotalEstimatedValue(tez: XTZAmount(fromNormalisedAmount: -1), value: "")),
+					.init(LoadingContainerCellObject()),
+					.init(LoadingContainerCellObject()),
+					.init(LoadingContainerCellObject())
+				]
+				
+				data.append(contentsOf: hashableData)
+			}
+			
+			snapshot.appendSections([0])
+			snapshot.appendItems(data, toSection: 0)
+			
+			
+			// Check for force refreshing or animating diffs
+			if self?.forceRefresh == true {
+				ds.applySnapshotUsingReloadData(snapshot)
+				self?.forceRefresh = false
+				DependencyManager.shared.currencyChanged = false
+			} else {
+				ds.apply(snapshot, animatingDifferences: animate)
+			}
+			
+			
+			DispatchQueue.main.async { [weak self] in
+				self?.state = .success(nil)
+			}
 		}
-		
-		snapshot.appendSections([0])
-		snapshot.appendItems(data, toSection: 0)
-		
-		
-		// Check for force refreshing or animating diffs
-		if forceRefresh {
-			ds.applySnapshotUsingReloadData(snapshot)
-			forceRefresh = false
-		} else {
-			ds.apply(snapshot, animatingDifferences: animate)
-		}
-		
-		self.state = .success(nil)
 	}
 	
 	private func isEmptyAccount() -> Bool {

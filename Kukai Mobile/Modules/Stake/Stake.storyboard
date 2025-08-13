@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
     <device id="retina4_7" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -730,7 +730,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qnl-JA-197">
                                 <rect key="frame" x="16" y="485" width="382" height="51"/>
-                                <string key="text">Changing your baker will unstake your staked balance which takes 4 days to become available. You can stake from your available balance with your new baker at any time.</string>
+                                <string key="text">Changing your baker will unstake your staked balance which takes 4 days to become available. You cannot stake funds with your new baker during this time</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="BGB-alt4"/>
                                 <nil key="highlightedColor"/>
@@ -1530,7 +1530,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cEk-QQ-0qe">
                                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="459"/>
                                                                 <subviews>
-                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gts-0w-MIr">
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gts-0w-MIr" customClass="SDAnimatedImageView">
                                                                         <rect key="frame" x="14" y="10" width="40" height="40"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="40" id="NZV-VG-Cb8"/>
@@ -1872,7 +1872,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                 <rect key="frame" x="0.0" y="632" width="375" height="35"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="Jox-TU-EEL">
-                                        <rect key="frame" x="32" y="10.5" width="14" height="14"/>
+                                        <rect key="frame" x="32" y="4" width="14" height="14"/>
                                         <color key="tintColor" name="TxtTestState"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="14" id="7uP-pF-BAq"/>
@@ -1880,13 +1880,13 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Ghostnet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r6j-ya-NAZ">
-                                        <rect key="frame" x="58" y="10.5" width="190.5" height="14.5"/>
+                                        <rect key="frame" x="58" y="4" width="190.5" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="TxtTestState"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="TRj-Bf-ZFE">
-                                        <rect key="frame" x="329" y="10.5" width="14" height="14"/>
+                                        <rect key="frame" x="329" y="4" width="14" height="14"/>
                                         <color key="tintColor" name="TxtTestState"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="14" id="7JP-uD-O7k"/>
@@ -1894,7 +1894,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test Only" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ShD-YP-DLs">
-                                        <rect key="frame" x="264.5" y="10.5" width="52.5" height="14.5"/>
+                                        <rect key="frame" x="264.5" y="4" width="52.5" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="TxtTestState"/>
                                         <nil key="highlightedColor"/>
@@ -1905,10 +1905,10 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                     <constraint firstAttribute="trailing" secondItem="TRj-Bf-ZFE" secondAttribute="trailing" constant="32" id="4i5-cx-o1V"/>
                                     <constraint firstItem="ShD-YP-DLs" firstAttribute="centerY" secondItem="TRj-Bf-ZFE" secondAttribute="centerY" id="5MN-do-IZJ"/>
                                     <constraint firstItem="Jox-TU-EEL" firstAttribute="leading" secondItem="tW4-Rt-ciB" secondAttribute="leading" constant="32" id="B3f-XX-xyB"/>
-                                    <constraint firstItem="TRj-Bf-ZFE" firstAttribute="centerY" secondItem="tW4-Rt-ciB" secondAttribute="centerY" id="ES2-TR-s8c"/>
+                                    <constraint firstItem="TRj-Bf-ZFE" firstAttribute="top" secondItem="tW4-Rt-ciB" secondAttribute="top" constant="4" id="D2m-yW-2y2"/>
                                     <constraint firstAttribute="height" constant="35" id="GPK-z1-q9A"/>
                                     <constraint firstItem="TRj-Bf-ZFE" firstAttribute="leading" secondItem="ShD-YP-DLs" secondAttribute="trailing" constant="12" id="VT2-NA-LfG"/>
-                                    <constraint firstItem="Jox-TU-EEL" firstAttribute="centerY" secondItem="tW4-Rt-ciB" secondAttribute="centerY" id="apD-Dx-idk"/>
+                                    <constraint firstItem="Jox-TU-EEL" firstAttribute="top" secondItem="tW4-Rt-ciB" secondAttribute="top" constant="4" id="YaH-VH-d35"/>
                                     <constraint firstItem="ShD-YP-DLs" firstAttribute="leading" secondItem="r6j-ya-NAZ" secondAttribute="trailing" constant="16" id="cjQ-Lt-gw3"/>
                                     <constraint firstItem="r6j-ya-NAZ" firstAttribute="centerY" secondItem="Jox-TU-EEL" secondAttribute="centerY" id="l4T-eN-xBq"/>
                                     <constraint firstItem="r6j-ya-NAZ" firstAttribute="leading" secondItem="Jox-TU-EEL" secondAttribute="trailing" constant="12" id="rwG-iF-hR2"/>
@@ -2546,7 +2546,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                 <rect key="frame" x="0.0" y="632" width="375" height="35"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="bOT-1a-z2m">
-                                        <rect key="frame" x="32" y="10.5" width="14" height="14"/>
+                                        <rect key="frame" x="32" y="4" width="14" height="14"/>
                                         <color key="tintColor" name="TxtTestState"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="14" id="K0k-4J-Hiy"/>
@@ -2554,13 +2554,13 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Ghostnet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xAE-kh-pGn">
-                                        <rect key="frame" x="58" y="10.5" width="190.5" height="14.5"/>
+                                        <rect key="frame" x="58" y="4" width="190.5" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="TxtTestState"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="9fL-TD-uxu">
-                                        <rect key="frame" x="329" y="10.5" width="14" height="14"/>
+                                        <rect key="frame" x="329" y="4" width="14" height="14"/>
                                         <color key="tintColor" name="TxtTestState"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="14" id="ieK-kE-7wT"/>
@@ -2568,7 +2568,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test Only" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6TS-18-7fg">
-                                        <rect key="frame" x="264.5" y="10.5" width="52.5" height="14.5"/>
+                                        <rect key="frame" x="264.5" y="4" width="52.5" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="TxtTestState"/>
                                         <nil key="highlightedColor"/>
@@ -2580,9 +2580,9 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                     <constraint firstItem="xAE-kh-pGn" firstAttribute="leading" secondItem="bOT-1a-z2m" secondAttribute="trailing" constant="12" id="6Y0-hY-aTA"/>
                                     <constraint firstItem="6TS-18-7fg" firstAttribute="leading" secondItem="xAE-kh-pGn" secondAttribute="trailing" constant="16" id="IhE-wm-XZW"/>
                                     <constraint firstAttribute="height" constant="35" id="WOj-Xw-wb4"/>
+                                    <constraint firstItem="bOT-1a-z2m" firstAttribute="top" secondItem="Gm0-lD-f5X" secondAttribute="top" constant="4" id="dMB-9z-g8d"/>
                                     <constraint firstItem="bOT-1a-z2m" firstAttribute="leading" secondItem="Gm0-lD-f5X" secondAttribute="leading" constant="32" id="gsz-gN-U2X"/>
-                                    <constraint firstItem="9fL-TD-uxu" firstAttribute="centerY" secondItem="Gm0-lD-f5X" secondAttribute="centerY" id="m8o-np-p5p"/>
-                                    <constraint firstItem="bOT-1a-z2m" firstAttribute="centerY" secondItem="Gm0-lD-f5X" secondAttribute="centerY" id="rxG-B5-ngg"/>
+                                    <constraint firstItem="9fL-TD-uxu" firstAttribute="top" secondItem="Gm0-lD-f5X" secondAttribute="top" constant="4" id="rVp-xi-luM"/>
                                     <constraint firstItem="9fL-TD-uxu" firstAttribute="leading" secondItem="6TS-18-7fg" secondAttribute="trailing" constant="12" id="uBa-bn-LVa"/>
                                     <constraint firstItem="xAE-kh-pGn" firstAttribute="centerY" secondItem="bOT-1a-z2m" secondAttribute="centerY" id="whn-da-3mr"/>
                                     <constraint firstAttribute="trailing" secondItem="9fL-TD-uxu" secondAttribute="trailing" constant="32" id="xOq-H8-r4p"/>
@@ -3504,13 +3504,13 @@ The baker earns rewards from your delegation. Your baker will split the rewards 
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1z4-KG-wz5">
                                 <rect key="frame" x="32" y="98" width="311" height="269"/>
-                                <mutableString key="text">Staking is when you lock a portion of your XTZ to secure the network. Your staked XTZ remains in your account but it is not available until you unstake it.
+                                <string key="text">Staking is when you lock a portion of your XTZ to secure the network. Your staked XTZ remains in your account but it is not available until you unstake it.
 
 The baker you selected participates in network security, and helps run the network by following the rules of the Tezos protocol to earn rewards.
 
 Because your staked XTZ is locked and at small risk of loss, the rewards are 3 times higher than delegation.
 
-To unstake you pay a very small transaction fee to submit the request, and it takes approximately 3 to 4 days for the amount to be unstaked.</mutableString>
+To unstake you pay a very small transaction fee to submit the request, and it takes approximately 3 to 4 days for the amount to be unstaked.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -3764,13 +3764,13 @@ Users should monitor their baker and ensure that they regularly vote.</string>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZL-9Y-ZBi">
                                 <rect key="frame" x="32" y="122" width="311" height="269"/>
-                                <mutableString key="text">Staking rewards are paid out automatically by the Tezos network and added directly to your staked balance. Staking rewards will not appear in your activity history.
+                                <string key="text">Staking rewards are paid out automatically by the Tezos network and added directly to your staked balance. Staking rewards will not appear in your activity history.
 
 You do not need to wait for a manual payout from your baker, staking rewards appear immediately when your baker earns them.
 
 Because staking rewards are paid into your staked balance, they are auto-staked and start earning rewards without you needing to take any action.
 
-If you want to make your rewards available to spend, you need to unstake them first.</mutableString>
+If you want to make your rewards available to spend, you need to unstake them first.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -4049,7 +4049,7 @@ Most bakers run social media accounts where they discuss upcoming proposals and 
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mmo-9u-2xO">
                                 <rect key="frame" x="32" y="98" width="311" height="403.5"/>
-                                <mutableString key="text">Baking is the process of creating new blocks, filled with transactions, for the Tezos blockchain.
+                                <string key="text">Baking is the process of creating new blocks, filled with transactions, for the Tezos blockchain.
 
 A baker is a person or organisation that locks up an amount of XTZ as a security bond, and provides a computer to run the Tezos software to bake blocks.
 
@@ -4057,7 +4057,7 @@ Bakers earn rewards per block baked. The number of blocks they are allowed to pr
 
 Bakers split the rewards with users and pay out manually, keeping a % as their fee.
 
-Bakers also vote on proposals to upgrade the network during the Governance process.</mutableString>
+Bakers also vote on proposals to upgrade the network during the Governance process.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -4244,7 +4244,7 @@ Bakers also vote on proposals to upgrade the network during the Governance proce
             <objects>
                 <viewController storyboardIdentifier="transaction-processing-2" title="step7" id="vjY-S1-pnC" customClass="StakeTransactionProcessingViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0eU-7d-Vrw">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="447"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Processing ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mbV-P8-9In">
@@ -4393,6 +4393,7 @@ Bakers also vote on proposals to upgrade the network during the Governance proce
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="5Ks-bq-Xd1"/>
+                    <size key="freeformSize" width="375" height="600"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isStaking" value="YES"/>
                     </userDefinedRuntimeAttributes>

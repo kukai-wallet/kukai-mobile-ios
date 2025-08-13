@@ -111,33 +111,6 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	
 	// MARK: - CollectionView
 	
-	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		if let c = cell as? CollectiblesCollectionCell {
-			c.setupCollectionImage(url: viewModel.willDisplayCollectionImage(forIndexPath: indexPath))
-			c.setupImages(imageURLs: viewModel.willDisplayImages(forIndexPath: indexPath))
-			
-		} else if let c = cell as? CollectiblesCollectionLargeCell, let url = viewModel.willDisplayImages(forIndexPath: indexPath).first {
-			let halfMegaByte: UInt = 500000
-			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: halfMegaByte)
-			
-		} else if let c = cell as? CollectiblesCollectionSinglePageCell, let url = viewModel.willDisplayImages(forIndexPath: indexPath).first {
-			let oneHundredMegabyte: UInt = 100000000
-			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: oneHundredMegabyte)
-			
-		} else if let c = cell as? SearchResultCell, let url = viewModel.willDisplayImages(forIndexPath: indexPath).first {
-			let halfMegaByte: UInt = 500000
-			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: halfMegaByte)
-		}
-	}
-	
-	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		guard let cell = cell as? UITableViewCellImageDownloading else {
-			return
-		}
-		
-		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
-	}
-	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		if indexPath.section == 0 {
 			return

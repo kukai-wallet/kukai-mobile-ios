@@ -60,7 +60,7 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		if DependencyManager.shared.currentNetworkType == .mainnet {
 			testnetWarningView.isHidden = true
 		} else {
-			testnetWarningNetworkLabel.text = DependencyManager.NetworkManagement.name()
+			testnetWarningNetworkLabel.text = DependencyManager.NetworkManagement.currentNetworkDisplayName()
 		}
 		
 		

@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class FavouriteTokenCell: UITableViewCell, UITableViewCellImageDownloading {
+class FavouriteTokenCell: UITableViewCell {
 	
 	@IBOutlet weak var favIcon: UIImageView!
 	@IBOutlet weak var favIconStackview: UIStackView!
@@ -75,7 +75,8 @@ class FavouriteTokenCell: UITableViewCell, UITableViewCellImageDownloading {
 		}
 	}
 	
-	func downloadingImageViews() -> [SDAnimatedImageView] {
-		return [tokenIcon]
+	override func prepareForReuse() {
+		tokenIcon.sd_cancelCurrentImageLoad()
+		tokenIcon.image = nil
 	}
 }

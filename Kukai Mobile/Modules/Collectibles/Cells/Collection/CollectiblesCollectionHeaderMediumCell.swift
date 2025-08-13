@@ -8,13 +8,14 @@
 import UIKit
 import SDWebImage
 
-class CollectiblesCollectionHeaderMediumCell: UICollectionViewCell, UITableViewCellImageDownloading {
+class CollectiblesCollectionHeaderMediumCell: UICollectionViewCell {
 	
 	@IBOutlet weak var iconView: SDAnimatedImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var creatorLabel: UILabel!
 	
-	func downloadingImageViews() -> [SDAnimatedImageView] {
-		return [iconView]
+	override func prepareForReuse() {
+		iconView.sd_cancelCurrentImageLoad()
+		iconView.image = nil
 	}
 }

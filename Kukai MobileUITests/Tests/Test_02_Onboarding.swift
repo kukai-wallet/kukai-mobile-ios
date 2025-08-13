@@ -370,7 +370,7 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		// App state verification
 		Test_04_Account.check(app: app, estimatedTotalExists: true)
-		Test_04_Account.check(app: app, hasNumberOfTokens: 3, andXTZ: false)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 2, andXTZ: true)
 		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
 		Test_04_Account.check(app: app, displayingBackup: false)
 		

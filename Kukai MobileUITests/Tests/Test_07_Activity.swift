@@ -30,6 +30,7 @@ final class Test_07_Activity: XCTestCase {
 	func testVerifyItemsPresent() {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
 		Test_03_Home.handleOpenActivityTab(app: app)
 		sleep(2)
 		
@@ -90,6 +91,6 @@ final class Test_07_Activity: XCTestCase {
 		
 		
 		// Check for delegations
-		XCTAssert(normalCells.staticTexts["Baking Benjamins"].exists)
+		XCTAssert(normalCells.staticTexts["Tezos Foundation Ghost Baker"].exists)
 	}
 }
