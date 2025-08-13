@@ -134,28 +134,30 @@ class CreateWithSocialViewController: UIViewController {
 	}
 	
 	func handleResult(result: Result<TorusWallet, KukaiError>) {
-		switch result {
-			case .success(let wallet):
-				self.updateLoadingModalStatusLabel(message: "Wallet created, checking for tezos domain registrations")
-				
-				WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, backedUp: false, markSelected: true) { [weak self] errorString in
-					if let eString = errorString {
-						self?.hideLoadingView()
-						self?.windowError(withTitle: "error".localized(), description: eString)
-					} else {
-						self?.navigate()
+		DispatchQueue.main.async {
+			switch result {
+				case .success(let wallet):
+					self.updateLoadingModalStatusLabel(message: "Wallet created, checking for tezos domain registrations")
+					
+					WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, backedUp: false, markSelected: true) { [weak self] errorString in
+						if let eString = errorString {
+							self?.hideLoadingView()
+							self?.windowError(withTitle: "error".localized(), description: eString)
+						} else {
+							self?.navigate()
+						}
 					}
-				}
-				
-			case .failure(let error):
-				self.hideLoadingView()
-				
-				// Cancelled errors
-				if (error.subType?.domain != "com.apple.AuthenticationServices.AuthorizationError" && error.subType?.code != 1001) &&
-					!(error.errorType == .internalApplication && error.subType?.code == 1)
-				{
-					self.windowError(withTitle: "error".localized(), description: error.description)
-				}
+					
+				case .failure(let error):
+					self.hideLoadingView()
+					
+					// Cancelled errors
+					if (error.subType?.domain != "com.apple.AuthenticationServices.AuthorizationError" && error.subType?.code != 1001) &&
+						!(error.errorType == .internalApplication && error.subType?.code == 1)
+					{
+						self.windowError(withTitle: "error".localized(), description: error.description)
+					}
+			}
 		}
 	}
 	
