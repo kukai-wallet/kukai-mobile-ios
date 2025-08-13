@@ -32,8 +32,17 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 		navBarMiddleView.addConstraint(NSLayoutConstraint(item: navBarMiddleView as Any, attribute: .width, relatedBy: .lessThanOrEqual, toItem: nil, attribute: .width, multiplier: 1, constant: navBarMiddleViewWidth))
 		navBarMiddleView.addConstraint(NSLayoutConstraint(item: navBarMiddleView as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 28))
 		
-		moreButton.addConstraint(NSLayoutConstraint(item: moreButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44))
-		moreButton.addConstraint(NSLayoutConstraint(item: moreButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
+		if #available(iOS 26.0, *) {
+			self.navigationController?.navigationBar.clipsToBounds = true
+			self.navBarMiddleView.layer.allowsGroupOpacity = false
+			self.navBarMiddleView.backgroundColor = .clear
+			self.navBarMiddleView.isOpaque = true
+			self.navBarMiddleView.layer.isOpaque = true
+			
+		} else {
+			moreButton.addConstraint(NSLayoutConstraint(item: moreButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44))
+			moreButton.addConstraint(NSLayoutConstraint(item: moreButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
+		}
 		
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		viewModel.selectedToken = selectedToken
@@ -62,7 +71,7 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 		// Setup UI
 		MediaProxyService.load(url: selectedToken?.thumbnailURL, to: navBarMiddleImage, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		navBarMiddleLabel.text = selectedToken?.name ?? ""
-		navBarMiddleView.transform = .init(translationX: 0, y: 44)
+		navBarMiddleView.transform = .init(translationX: 0, y: 50)
 		
 		menuViewController = viewModel.menuViewControllerForMoreButton(forViewController: self)
 		if menuViewController == nil {
@@ -89,7 +98,7 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		let padding: CGFloat = 70
 		let adjustedOffset = (scrollView.contentOffset.y - padding)
-		navBarMiddleView.transform = .init(translationX: 0, y: max(0, (44 - adjustedOffset)))
+		navBarMiddleView.transform = .init(translationX: 0, y: max(0, (50 - adjustedOffset)))
 	}
 	
 	@IBAction func moreButtonTapped(_ sender: UIButton) {

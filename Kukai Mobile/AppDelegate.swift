@@ -116,6 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func setAppearenceProxies() {
 		let navigationBarAppearance = UINavigationBarAppearance()
 		navigationBarAppearance.configureWithOpaqueBackground()
+		navigationBarAppearance.backgroundEffect = nil
 		navigationBarAppearance.backgroundColor = UIColor.clear
 		navigationBarAppearance.shadowColor = .clear
 		navigationBarAppearance.titleTextAttributes = [

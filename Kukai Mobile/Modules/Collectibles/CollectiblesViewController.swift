@@ -17,8 +17,8 @@ protocol CollectiblesViewControllerChild {
 
 class CollectiblesViewController: UIViewController {
 
-	@IBOutlet weak var ghostnetStackview: UIStackView!
-	@IBOutlet weak var testnetWarningLabel: UILabel!
+	@IBOutlet weak var ghostnetStackview: UIStackView?
+	@IBOutlet weak var testnetWarningLabel: UILabel?
 	@IBOutlet weak var segmentedControl: UISegmentedControl!
 	@IBOutlet weak var moreButton: CustomisableButton!
 	@IBOutlet weak var containerView: UIView!
@@ -67,8 +67,8 @@ class CollectiblesViewController: UIViewController {
 	}
 	
 	private func displayGhostnet() {
-		testnetWarningLabel.text = DependencyManager.NetworkManagement.currentNetworkDisplayName() + "   Test Only"
-		ghostnetStackview.isHidden = !(DependencyManager.shared.currentNetworkType != .mainnet)
+		testnetWarningLabel?.text = DependencyManager.NetworkManagement.currentNetworkDisplayName() + "   Test Only"
+		ghostnetStackview?.isHidden = !(DependencyManager.shared.currentNetworkType != .mainnet)
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
