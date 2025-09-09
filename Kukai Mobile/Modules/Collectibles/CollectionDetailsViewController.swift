@@ -33,11 +33,6 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 		navBarMiddleView.addConstraint(NSLayoutConstraint(item: navBarMiddleView as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 28))
 		
 		if #available(iOS 26.0, *) {
-			self.navigationController?.navigationBar.clipsToBounds = true
-			self.navBarMiddleView.layer.allowsGroupOpacity = false
-			self.navBarMiddleView.backgroundColor = .clear
-			self.navBarMiddleView.isOpaque = true
-			self.navBarMiddleView.layer.isOpaque = true
 			
 		} else {
 			moreButton.addConstraint(NSLayoutConstraint(item: moreButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44))
@@ -71,7 +66,6 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 		// Setup UI
 		MediaProxyService.load(url: selectedToken?.thumbnailURL, to: navBarMiddleImage, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		navBarMiddleLabel.text = selectedToken?.name ?? ""
-		navBarMiddleView.transform = .init(translationX: 0, y: 50)
 		
 		menuViewController = viewModel.menuViewControllerForMoreButton(forViewController: self)
 		if menuViewController == nil {
@@ -90,15 +84,25 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 		viewModel.refresh(animate: false)
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		// iOS 26 BS workaround
+		// alpha/opacity set before viewDidAppear is ignored, only hidden is respected, but that can't be animated
+		// So have it start off hidden, and then switch to alpha
+		navBarMiddleView.alpha = 0
+		navBarMiddleView.isHidden = false
+	}
+	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		viewModel.isVisible = false
 	}
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		let padding: CGFloat = 70
-		let adjustedOffset = (scrollView.contentOffset.y - padding)
-		navBarMiddleView.transform = .init(translationX: 0, y: max(0, (50 - adjustedOffset)))
+		let scrollOffset = max(0.1, (scrollView.contentOffset.y) - 25)
+		let alpha = min(1, (scrollOffset / 70))
+		navBarMiddleView.alpha = alpha
 	}
 	
 	@IBAction func moreButtonTapped(_ sender: UIButton) {
