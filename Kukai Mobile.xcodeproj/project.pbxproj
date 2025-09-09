@@ -19,7 +19,6 @@
 		C001D5AE2A027ED60089EC7A /* CollectiblesRecentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001D5AD2A027ED60089EC7A /* CollectiblesRecentsViewModel.swift */; };
 		C001D5B02A027F330089EC7A /* CollectionDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001D5AF2A027F330089EC7A /* CollectionDetailsViewController.swift */; };
 		C001D5B22A027F410089EC7A /* CollectionDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001D5B12A027F410089EC7A /* CollectionDetailsViewModel.swift */; };
-		C001FE0C2E33D2A9009C3FD1 /* ReadWriteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001FE0B2E33D29D009C3FD1 /* ReadWriteCoordinator.swift */; };
 		C003AEB42B470D6E00AEC4A8 /* SendAbstractConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C003AEB32B470D6E00AEC4A8 /* SendAbstractConfirmViewController.swift */; };
 		C003CECB27FDE9C900F64B4C /* CloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C003CECA27FDE9C900F64B4C /* CloudKitService.swift */; };
 		C003CECD27FDED5D00F64B4C /* CKRecord+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C003CECC27FDED5D00F64B4C /* CKRecord+extensions.swift */; };
@@ -187,6 +186,7 @@
 		C055EF1C2A2F85B60031CB5F /* CurrencyChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C055EF1B2A2F85B60031CB5F /* CurrencyChoiceCell.swift */; };
 		C055EF1E2A2F95310031CB5F /* ShowQRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C055EF1D2A2F95310031CB5F /* ShowQRViewController.swift */; };
 		C055EF212A2F95ED0031CB5F /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = C055EF202A2F95ED0031CB5F /* QRCode */; };
+		C05737E82E37B6DE0031446E /* ReadWriteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05737E72E37B6D50031446E /* ReadWriteCoordinator.swift */; };
 		C057CF622AB0BC0900E82D41 /* UIDevice+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C057CF612AB0BC0900E82D41 /* UIDevice+extensions.swift */; };
 		C057E3882BE2D03700189234 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C057E3872BE2D03700189234 /* CustomNavigationController.swift */; };
 		C05848A8280EF5CC007933CA /* ThemePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05848A7280EF5CC007933CA /* ThemePickerViewController.swift */; };
@@ -474,7 +474,6 @@
 		C001D5AD2A027ED60089EC7A /* CollectiblesRecentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesRecentsViewModel.swift; sourceTree = "<group>"; };
 		C001D5AF2A027F330089EC7A /* CollectionDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDetailsViewController.swift; sourceTree = "<group>"; };
 		C001D5B12A027F410089EC7A /* CollectionDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDetailsViewModel.swift; sourceTree = "<group>"; };
-		C001FE0B2E33D29D009C3FD1 /* ReadWriteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteCoordinator.swift; sourceTree = "<group>"; };
 		C003AEB32B470D6E00AEC4A8 /* SendAbstractConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendAbstractConfirmViewController.swift; sourceTree = "<group>"; };
 		C003CECA27FDE9C900F64B4C /* CloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitService.swift; sourceTree = "<group>"; };
 		C003CECC27FDED5D00F64B4C /* CKRecord+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKRecord+extensions.swift"; sourceTree = "<group>"; };
@@ -634,6 +633,7 @@
 		C055EF192A2F77F00031CB5F /* NetworkChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkChoiceCell.swift; sourceTree = "<group>"; };
 		C055EF1B2A2F85B60031CB5F /* CurrencyChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyChoiceCell.swift; sourceTree = "<group>"; };
 		C055EF1D2A2F95310031CB5F /* ShowQRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowQRViewController.swift; sourceTree = "<group>"; };
+		C05737E72E37B6D50031446E /* ReadWriteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadWriteCoordinator.swift; sourceTree = "<group>"; };
 		C057CF612AB0BC0900E82D41 /* UIDevice+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+extensions.swift"; sourceTree = "<group>"; };
 		C057E3872BE2D03700189234 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		C05848A7280EF5CC007933CA /* ThemePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerViewController.swift; sourceTree = "<group>"; };
@@ -954,7 +954,7 @@
 		C0082BF126A6C69C00DB160B /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				C001FE0B2E33D29D009C3FD1 /* ReadWriteCoordinator.swift */,
+				C05737E72E37B6D50031446E /* ReadWriteCoordinator.swift */,
 				C0082BF226A6C6B300DB160B /* DependencyManager.swift */,
 				C0B08A38270DDED300075618 /* TransactionService.swift */,
 				C0E6BCBA2A332FE900F86577 /* BalanceService.swift */,
@@ -1824,7 +1824,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 2600;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					C0B0363E269EE2070071ACD0 = {
 						CreatedOnToolsVersion = 12.5;
@@ -2010,7 +2010,7 @@
 				C0742C53297ADC8E005D6DB0 /* MenuViewController.swift in Sources */,
 				C009F88F28197F1D007EA8A8 /* GmailValidator.swift in Sources */,
 				C02F3CB42BFF5B8E00FA6383 /* AccountsAddOptionCell.swift in Sources */,
-				C001FE0C2E33D2A9009C3FD1 /* ReadWriteCoordinator.swift in Sources */,
+				C05737E82E37B6DE0031446E /* ReadWriteCoordinator.swift in Sources */,
 				C055EF1A2A2F77F10031CB5F /* NetworkChoiceCell.swift in Sources */,
 				C0657AD026B2CB6F009ED7D3 /* UITextField+extensions.swift in Sources */,
 				C0717B1E2A697D3D007F9419 /* EnterCustomBakerViewController.swift in Sources */,
@@ -2560,7 +2560,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Kukai Mobile/Kukai Mobile-dev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 420;
+				CURRENT_PROJECT_VERSION = 422;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
@@ -2576,7 +2576,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.2.14;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
 				OTHER_SWIFT_FLAGS = "";
@@ -2603,8 +2603,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 420;
-				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				CURRENT_PROJECT_VERSION = 422;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
 				IBSC_WARNINGS = YES;
@@ -2619,7 +2618,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.2.14;
 				OTHER_CFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-Xfrontend -internalize-at-link";
 				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
@@ -2786,8 +2785,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 420;
-				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				CURRENT_PROJECT_VERSION = 422;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = "BETA=1";
@@ -2803,7 +2801,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.2.14;
 				OTHER_CFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-Xfrontend -internalize-at-link";
 				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
