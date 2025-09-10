@@ -195,7 +195,6 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		}
 		
 		return UIMenu(children: actions)
-		//return MenuViewController(actions: [actions], header: nil, sourceViewController: self)
 	}
 }
 

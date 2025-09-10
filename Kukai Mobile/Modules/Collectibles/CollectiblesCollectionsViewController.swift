@@ -125,20 +125,22 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		}
 	}
 	
-	func sortMenu() -> MenuViewController {
-		let choices: [MenuChoice] = [
-			MenuChoice(isSelected: true, action: UIAction(title: "Recent", image: UIImage(named: "Recents"), identifier: nil, handler: { [weak self] action in
+	func sortMenu() -> UIMenu {
+		
+		// Currently disabled/hidden
+		let children: [UIAction] = [
+			UIAction(title: "Recent", image: UIImage(named: "Recents")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 				self?.windowError(withTitle: "error".localized(), description: "Recent sort not functional yet")
-			})),
-			MenuChoice(isSelected: false, action: UIAction(title: "Name", image: UIImage(named: "Alphabetical"), identifier: nil, handler: { [weak self] action in
+			}),
+			UIAction(title: "Name", image: UIImage(named: "Alphabetical")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 				self?.windowError(withTitle: "error".localized(), description: "Alphabetical sort not functional yet")
-			})),
-			MenuChoice(isSelected: false, action: UIAction(title: "Collection", image: UIImage(named: "CollectionGroupView"), identifier: nil, handler: { [weak self] action in
+			}),
+			UIAction(title: "Collection", image: UIImage(named: "CollectionGroupView")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 				self?.windowError(withTitle: "error".localized(), description: "Collection Group View sort not functional yet")
-			}))
+			})
 		]
 		
-		return MenuViewController(choices: choices, header: "Sort Tokens", sourceViewController: self)
+		return UIMenu(title: "Sort Tokens", options: .singleSelection, children: children)
 	}
 }
 

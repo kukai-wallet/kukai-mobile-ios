@@ -20,7 +20,7 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 	
 	private let viewModel = CollectionDetailsViewModel()
 	private var cancellable: AnyCancellable?
-	private var menuViewController: MenuViewController? = nil
+	private var menu: UIMenu? = nil
 	
 	public var selectedToken: Token? = nil
 	
@@ -67,9 +67,12 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 		MediaProxyService.load(url: selectedToken?.thumbnailURL, to: navBarMiddleImage, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		navBarMiddleLabel.text = selectedToken?.name ?? ""
 		
-		menuViewController = viewModel.menuViewControllerForMoreButton(forViewController: self)
-		if menuViewController == nil {
+		menu = viewModel.menuForMoreButton(forViewController: self)
+		if menu == nil {
 			moreButton.isHidden = true
+		} else {
+			moreButton.menu = menu
+			moreButton.showsMenuAsPrimaryAction = true
 		}
     }
 	
@@ -106,7 +109,7 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 	}
 	
 	@IBAction func moreButtonTapped(_ sender: UIButton) {
-		menuViewController?.display(attachedTo: sender)
+		
 	}
 	
 	

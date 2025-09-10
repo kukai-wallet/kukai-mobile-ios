@@ -24,13 +24,14 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var peersSelected = true
+	weak var viewController: WalletConnectViewController? = nil
 	
 	private var sessions: [SessionObj] = []
 	
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
 			if let _ = item.base as? UUID {
 				return tableView.dequeueReusableCell(withIdentifier: "empty", for: indexPath)
@@ -51,6 +52,8 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.titleLabel.text = obj.address?.truncateTezosAddress()
 					cell.subtitleLabel.text = ""
 				}
+				
+				cell.setup(menu: self?.viewController?.menu(forSession: self?.sessions[indexPath.row]))
 				
 				return cell
 				

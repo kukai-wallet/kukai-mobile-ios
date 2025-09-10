@@ -34,7 +34,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	var isVisible = false
 	var forceRefresh = false
 	var isSearching = false
-	var sortMenu: MenuViewController? = nil
+	var sortMenu: UIMenu? = nil
 	var isGroupMode = false
 	var itemCount = 0
 	var needsLayoutChange = false
@@ -115,7 +115,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			if let _ = item.base as? CollectionEmptyObj, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCollectionCell", for: indexPath) as? EmptyCollectionCell {
 				return cell
 				
-			} else if let sortMenu = item.base as? MenuViewController, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
+			} else if let sortMenu = item.base as? UIMenu, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
 				cell.searchBar.validator = FreeformValidator(allowEmpty: true)
 				cell.searchBar.validatorTextFieldDelegate = self.validatorTextfieldDelegate
 				cell.setup(sortMenu: sortMenu)

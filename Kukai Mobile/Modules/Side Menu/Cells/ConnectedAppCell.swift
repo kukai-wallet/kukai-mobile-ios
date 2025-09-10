@@ -9,6 +9,7 @@ import UIKit
 
 class ConnectedAppCell: UITableViewCell {
 	
+	@IBOutlet weak var invisibleContainerButton: UIButton!
 	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var siteLabel: UILabel!
@@ -22,7 +23,10 @@ class ConnectedAppCell: UITableViewCell {
 		containerView.gradientType = .tableViewCell
 	}
 	
-	func setup() {
+	func setup(menu: UIMenu?) {
+		guard let m = menu else { return }
 		
+		invisibleContainerButton.menu = m
+		invisibleContainerButton.showsMenuAsPrimaryAction = true
 	}
 }

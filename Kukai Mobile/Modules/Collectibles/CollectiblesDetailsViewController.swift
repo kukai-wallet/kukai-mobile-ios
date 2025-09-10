@@ -20,7 +20,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	
 	private let viewModel = CollectiblesDetailsViewModel()
 	private var cancellable: AnyCancellable?
-	private var menu: MenuViewController? = nil
+	private var menu: UIMenu? = nil
 	private var firstLoad = true
 	//private let avPickerView = AVRoutePickerView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
 	
@@ -60,6 +60,9 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self
 		
+		menu = moreMenu()
+		moreButton.menu = menu
+		moreButton.showsMenuAsPrimaryAction = true
 		
 		let layout = CollectibleDetailLayout()
 		layout.delegate = viewModel
@@ -136,8 +139,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	}
 	
 	@IBAction func moreButtonTapped(_ sender: CustomisableButton) {
-		menu = moreMenu()
-		menu?.display(attachedTo: sender)
+		
 	}
 	
 	
@@ -172,18 +174,17 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		favouriteButton.updateCustomImage()
 	}
 	
-	func moreMenu() -> MenuViewController {
+	func moreMenu() -> UIMenu? {
 		guard let nft = viewModel.nft else {
-			return MenuViewController()
+			return nil
 		}
 		
-		var actions: [[UIAction]] = []
-		actions.append([])
+		var actions: [UIAction] = []
 		let objktCollectionInfo = DependencyManager.shared.objktClient.collections[nft.parentContract]
 		
 		if viewModel.mediaContent.isImage {
-			actions[0].append(
-				UIAction(title: "Save to Photos", image: UIImage(named: "SavetoPhotos"), identifier: nil, handler: { [weak self] action in
+			actions.append(
+				UIAction(title: "Save to Photos", image: UIImage(named: "SavetoPhotos")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 					guard let imageURL = MediaProxyService.largeURL(forNFT: nft) else {
 						return
 					}
@@ -197,12 +198,12 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 			)
 		}
 		
-		actions[0].append(UIAction(title: "Token Contract", image: UIImage(named: "About"), identifier: nil, handler: { [weak self] action in
+		actions.append(UIAction(title: "Token Contract", image: UIImage(named: "About")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 			self?.performSegue(withIdentifier: "tokenContract", sender: nil)
 		}))
 		
 		if viewModel.isHidden {
-			actions[0].append(
+			actions.append(
 				UIAction(title: "Unhide Collectible", image: UIImage(named: "HiddenOff"), identifier: nil, handler: { [weak self] action in
 					let address = DependencyManager.shared.selectedWalletAddress ?? ""
 					if TokenStateService.shared.removeHidden(forAddress: address, nft: nft) {
@@ -215,8 +216,8 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 				})
 			)
 		} else {
-			actions[0].append(
-				UIAction(title: "Hide Collectible", image: UIImage(named: "HiddenOn"), identifier: nil, handler: { [weak self] action in
+			actions.append(
+				UIAction(title: "Hide Collectible", image: UIImage(named: "HiddenOn")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 					let address = DependencyManager.shared.selectedWalletAddress ?? ""
 					if TokenStateService.shared.addHidden(forAddress: address, nft: nft) {
 						DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
@@ -233,7 +234,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		
 		// Social section
 		if let twitterURL = objktCollectionInfo?.twitterURL() {
-			let action = UIAction(title: "Twitter", image: UIImage(named: "Social_Twitter_1color")) { action in
+			let action = UIAction(title: "Twitter", image: UIImage(named: "Social_Twitter_1color")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4"))) { action in
 				
 				let path = twitterURL.path()
 				let pathIndex = path.index(after: path.startIndex)
@@ -245,7 +246,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 				}
 			}
 			
-			actions.append([action])
+			actions.append(action)
 		}
 		
 		
@@ -253,7 +254,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		var webActions: [UIAction] = []
 		
 		
-		let action = UIAction(title: "View Marketplace", image: UIImage(named: "ArrowWeb")) { action in
+		let action = UIAction(title: "View Marketplace", image: UIImage(named: "ArrowWeb")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4"))) { action in
 			if let url = URL(string: "https://objkt.com/tokens/\(nft.parentContract)/\(nft.tokenId)") {
 				UIApplication.shared.open(url)
 			}
@@ -261,15 +262,15 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		webActions.append(action)
 		
 		if let websiteURL = objktCollectionInfo?.websiteURL() {
-			let action = UIAction(title: "Collection Website", image: UIImage(named: "ArrowWeb")) { action in
+			let action = UIAction(title: "Collection Website", image: UIImage(named: "ArrowWeb")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4"))) { action in
 				UIApplication.shared.open(websiteURL)
 			}
 			
 			webActions.append(action)
 		}
-		actions.append(webActions)
+		actions.append(contentsOf: webActions)
 		
-		return MenuViewController(actions: actions, header: objktCollectionInfo?.name ?? nft.parentAlias, sourceViewController: self)
+		return UIMenu(title: objktCollectionInfo?.name ?? nft.parentAlias ?? "", children: actions)
 	}
 }
 

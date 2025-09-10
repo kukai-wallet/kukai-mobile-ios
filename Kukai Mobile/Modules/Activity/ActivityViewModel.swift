@@ -19,7 +19,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	public var isVisible = false
 	var forceRefresh = false
-	public var menuVc: MenuViewController? = nil
+	public var menu: UIMenu? = nil
 	
 	public var expandedIndex: IndexPath? = nil
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()

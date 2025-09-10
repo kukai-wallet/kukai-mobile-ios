@@ -26,6 +26,7 @@ class CollectiblesViewController: UIViewController {
 	private var pageController: OnboardingPageViewController? = nil
 	private var bag = [AnyCancellable]()
 	private var isVisible = false
+	private var menu: UIMenu? = nil
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,9 @@ class CollectiblesViewController: UIViewController {
 		segmentedControl.removeBorder()
 		segmentedControl.setFonts(selectedFont: .custom(ofType: .medium, andSize: 16), selectedColor: UIColor.colorNamed("Txt8"), defaultFont: UIFont.custom(ofType: .bold, andSize: 16), defaultColor: UIColor.colorNamed("Txt2"))
 		
+		menu = moreMenu()
+		moreButton.menu = menu
+		moreButton.showsMenuAsPrimaryAction = true
 		moreButton.accessibilityIdentifier = "colelctibles-tap-more"
 		
 		DependencyManager.shared.$addressRefreshed
@@ -90,20 +94,20 @@ class CollectiblesViewController: UIViewController {
 	}
 	
 	@IBAction func moreButtonTapped(_ sender: UIButton) {
-		moreMenu().display(attachedTo: sender)
+		//moreMenu().display(attachedTo: sender)
 	}
 	
-	private func moreMenu() -> MenuViewController {
+	private func moreMenu() -> UIMenu {
 		let isGroupMode = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
 		
 		let actionGroup1: [UIAction] = [
-			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOn"), identifier: nil, handler: { [weak self] action in
+			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOn")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "hidden", sender: nil)
 			})
 		]
 		
 		let actionGroup2: [UIAction] = [
-			UIAction(title: isGroupMode ? "Ungroup Collections" : "Group Collections", image: UIImage(named: "LargeIcons"), identifier: nil, handler: { [weak self] action in
+			UIAction(title: isGroupMode ? "Ungroup Collections" : "Group Collections", image: UIImage(named: "LargeIcons")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 				let currentValue = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
 				UserDefaults.standard.set(!currentValue, forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
 				
@@ -112,7 +116,7 @@ class CollectiblesViewController: UIViewController {
 			})
 		]
 		
-		return MenuViewController(actions: [actionGroup1, actionGroup2], header: nil, sourceViewController: self)
+		return UIMenu(title: "", children: actionGroup1 + actionGroup2)
 	}
 }
 

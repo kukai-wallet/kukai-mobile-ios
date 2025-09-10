@@ -13,17 +13,19 @@ class CollectiblesSearchCell: UICollectionViewCell {
 	@IBOutlet weak var sortButton: CustomisableButton!
 	@IBOutlet weak var cancelButton: UIButton!
 	
-	private var sortMenu: MenuViewController? = nil
+	private var sortMenu: UIMenu? = nil
 	
-	func setup(sortMenu: MenuViewController) {
+	func setup(sortMenu: UIMenu) {
 		self.sortMenu = sortMenu
+		self.sortButton.menu = sortMenu
+		self.sortButton.showsMenuAsPrimaryAction = true
 		
 		searchBar.accessibilityIdentifier = "collectibles-search"
 		cancelButton.accessibilityIdentifier = "collectibles-search-cancel"
 	}
 	
 	@IBAction func sortTapped(_ sender: UIButton) {
-		sortMenu?.display(attachedTo: sender)
+		//sortMenu?.display(attachedTo: sender)
 	}
 	
 	@IBAction func cancelButtonTapped(_ sender: Any) {

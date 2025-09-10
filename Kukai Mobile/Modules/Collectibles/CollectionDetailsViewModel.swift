@@ -143,8 +143,8 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 		return nil
 	}
 	
-	func menuViewControllerForMoreButton(forViewController: UIViewController) -> MenuViewController? {
-		var actions: [[UIAction]] = []
+	func menuForMoreButton(forViewController: UIViewController) -> UIMenu? {
+		var actions: [UIAction] = []
 		let contractAddress = selectedToken?.tokenContractAddress ?? ""
 		
 		if let objktCollectionInfo = DependencyManager.shared.objktClient.collections[contractAddress] {
@@ -156,7 +156,7 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 					updatedTwitterURL = URL(string: "https://twitter.com/TeiaArt")!
 				}
 				
-				let action = UIAction(title: "Twitter", image: UIImage(named: "Social_Twitter_1color")) { action in
+				let action = UIAction(title: "Twitter", image: UIImage(named: "Social_Twitter_1color")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4"))) { action in
 					
 					let path = updatedTwitterURL.path()
 					let pathIndex = path.index(after: path.startIndex)
@@ -168,7 +168,7 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 					}
 				}
 				
-				actions.append([action])
+				actions.append(action)
 			}
 			
 			
@@ -176,7 +176,7 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 			var webActions: [UIAction] = []
 			
 			
-			let action = UIAction(title: "View Marketplace", image: UIImage(named: "ArrowWeb")) { action in
+			let action = UIAction(title: "View Marketplace", image: UIImage(named: "ArrowWeb")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4"))) { action in
 				if let url = URL(string: "https://objkt.com/collection/\(contractAddress)") {
 					UIApplication.shared.open(url)
 				}
@@ -184,15 +184,16 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 			webActions.append(action)
 			
 			if let websiteURL = objktCollectionInfo.websiteURL() {
-				let action = UIAction(title: "Collection Website", image: UIImage(named: "ArrowWeb")) { action in
+				let action = UIAction(title: "Collection Website", image: UIImage(named: "ArrowWeb")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4"))) { action in
 					UIApplication.shared.open(websiteURL)
 				}
 				
 				webActions.append(action)
 			}
 			
-			actions.append(webActions)
-			return MenuViewController(actions: actions, header: nil, alertStyleIndexes: nil, sourceViewController: forViewController)
+			actions.append(contentsOf: webActions)
+			
+			return UIMenu(children: actions)
 		}
 		
 		return nil

@@ -22,6 +22,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 		super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
+		viewModel.viewController = self
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
@@ -124,17 +125,13 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 extension WalletConnectViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		guard let session = viewModel.sessionFor(indexPath: indexPath), let cell = tableView.cellForRow(at: indexPath) as? ConnectedAppCell else {
-			return
-		}
 		
-		let menu = menu(forSession: session)
-		menu.display(attachedTo: cell.iconView)
 	}
 	
-	func menu(forSession: SessionObj) -> MenuViewController {
+	func menu(forSession: SessionObj?) -> UIMenu? {
+		guard let forSession else { return nil }
 		
-		let disconnect = UIAction(title: "Disconnect", image: UIImage(named: "Remove")) { action in
+		let disconnect = UIAction(title: "Disconnect", image: UIImage(named: "Remove"), attributes: .destructive) { action in
 			Task {
 				do {
 					try await WalletKit.instance.disconnect(topic: forSession.topic)
@@ -150,7 +147,7 @@ extension WalletConnectViewController: UITableViewDelegate {
 			}
 		}
 		
-		let wallet = UIAction(title: "Switch Wallet", image: UIImage(named: "WalletSwitch")) { [weak self] action in
+		let wallet = UIAction(title: "Switch Wallet", image: UIImage(named: "WalletSwitch")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4"))) { [weak self] action in
 			guard let firstSession = WalletKit.instance.getSessions().filter({ $0.topic == forSession.topic }).first,
 				  let firstAccount = firstSession.accounts.first else {
 				self?.windowError(withTitle: "error".localized(), description: "error-wc2-switch-no-pairing".localized())
@@ -168,6 +165,6 @@ extension WalletConnectViewController: UITableViewDelegate {
 		}
 		*/
 		
-		return MenuViewController(actions: [[disconnect, wallet/*, network*/]], header: forSession.site, alertStyleIndexes: [IndexPath(row: 0, section: 0)], sourceViewController: self)
+		return UIMenu(title: forSession.site, children: [disconnect, wallet/*, network*/ ])
 	}
 }
