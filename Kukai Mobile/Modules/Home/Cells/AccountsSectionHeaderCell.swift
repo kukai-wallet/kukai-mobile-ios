@@ -14,7 +14,7 @@ class AccountsSectionHeaderCell: UITableViewCell {
 	@IBOutlet weak var checkImage: UIImageView?
 	@IBOutlet var menuButton: CustomisableButton!
 	
-	private var menu: MenuViewController? = nil
+	private var menu: UIMenu? = nil
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -23,14 +23,16 @@ class AccountsSectionHeaderCell: UITableViewCell {
 		menuButton.accessibilityIdentifier = "accounts-section-header-more"
 	}
 	
-	func setup(menuVC: MenuViewController?) {
+	func setup(menu: UIMenu?) {
 		
-		if let menuVC = menuVC {
-			menu = menuVC
+		if let menu = menu {
+			self.menu = menu
+			self.menuButton.menu = menu
+			self.menuButton.showsMenuAsPrimaryAction = true
 			menuButton.isHidden = false
 			
 		} else {
-			menu = nil
+			self.menu = nil
 			menuButton.isHidden = true
 		}
 	}
@@ -46,6 +48,6 @@ class AccountsSectionHeaderCell: UITableViewCell {
 	}
 	
 	@IBAction func moreTapped(_ sender: UIButton) {
-		menu?.display(attachedTo: sender)
+		
 	}
 }

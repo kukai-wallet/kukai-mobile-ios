@@ -20,7 +20,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	private let viewModel = TokenDetailsViewModel()
 	private var cancellable: AnyCancellable?
 	private var firstLoad = true
-	private var menu: MenuViewController? = nil
+	private var menu: UIMenu? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -52,6 +52,8 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 					self?.setFavState(isFav: self?.viewModel.buttonData?.isFavourited ?? false)
 					if self?.viewModel.buttonData?.hasMoreButton == true {
 						self?.menu = self?.moreMenu()
+						self?.moreButton.menu = self?.menu
+						self?.moreButton.showsMenuAsPrimaryAction = true
 						
 					} else {
 						self?.navigationItem.rightBarButtonItems?.removeAll(where: { item in
@@ -116,7 +118,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	@IBAction func moreButtonTapped(_ sender: CustomisableButton) {
-		menu?.display(attachedTo: sender)
+		//menu?.display(attachedTo: sender)
 	}
 	
 	private func setFavState(isFav: Bool) {
@@ -131,12 +133,12 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		favouriteButton.updateCustomImage()
 	}
 	
-	private func moreMenu() -> MenuViewController {
+	private func moreMenu() -> UIMenu {
 		var actions: [UIAction] = []
 		
 		if viewModel.token?.isXTZ() == false {
 			actions.append(
-				UIAction(title: "Token Contract", image: UIImage(named: "Placeholder"), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Token Contract", image: UIImage(named: "CollectionGroupView")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 					self?.performSegue(withIdentifier: "tokenContract", sender: nil)
 				})
 			)
@@ -145,7 +147,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		if viewModel.buttonData?.canBeHidden == true {
 			if viewModel.buttonData?.isHidden == true {
 				actions.append(
-					UIAction(title: "Unhide Token", image: UIImage(named: "HiddenOff"), identifier: nil, handler: { [weak self] action in
+					UIAction(title: "Unhide Token", image: UIImage(named: "HiddenOff")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 						guard let token = TransactionService.shared.sendData.chosenToken else {
 							self?.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
 							return
@@ -163,7 +165,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 				)
 			} else {
 				actions.append(
-					UIAction(title: "Hide Token", image: UIImage(named: "HiddenOn"), identifier: nil, handler: { [weak self] action in
+					UIAction(title: "Hide Token", image: UIImage(named: "HiddenOn")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 						guard let token = TransactionService.shared.sendData.chosenToken else {
 							self?.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
 							return
@@ -184,7 +186,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		
 		if viewModel.buttonData?.canBeViewedOnline == true {
 			actions.append(
-				UIAction(title: "View on Blockchain", image: UIImage(named: "ArrowWeb"), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "View on Blockchain", image: UIImage(named: "ArrowWeb")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 					if let contract = self?.viewModel.token?.tokenContractAddress, let url = URL(string: "https://better-call.dev/mainnet/\(contract)") {
 						UIApplication.shared.open(url, completionHandler: nil)
 					}
@@ -192,7 +194,8 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 			)
 		}
 		
-		return MenuViewController(actions: [actions], header: nil, sourceViewController: self)
+		return UIMenu(children: actions)
+		//return MenuViewController(actions: [actions], header: nil, sourceViewController: self)
 	}
 }
 

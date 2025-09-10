@@ -17,7 +17,7 @@ protocol AccountsViewModelDelegate: UIViewController {
 struct AccountsHeaderObject: Hashable {
 	let id = UUID()
 	let header: String
-	let menu: MenuViewController?
+	let menu: UIMenu?
 	let showLess: Bool
 }
 
@@ -88,7 +88,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			if let obj = item.base as? AccountsHeaderObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
 				cell.headingLabel.text = obj.header
-				cell.setup(menuVC: obj.menu)
+				cell.setup(menu: obj.menu)
 				cell.checkImage?.isHidden = !(self?.selectedIndex.section == indexPath.section && (self?.selectedIndex.row ?? 0) > 3)
 				
 				return cell
@@ -354,10 +354,10 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		return false
 	}
 	
-	private func menuFor(walletMetadata: WalletMetadata, hdWalletIndex: Int) -> MenuViewController? {
+	private func menuFor(walletMetadata: WalletMetadata, hdWalletIndex: Int) -> UIMenu? {
 		guard let vc = delegate else { return nil }
 		
-		let edit = UIAction(title: "Edit Name", image: UIImage(named: "Edit")) { [weak self] action in
+		let edit = UIAction(title: "Edit Name", image: UIImage(named: "Edit")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4"))) { [weak self] action in
 			
 			// Fetch from store, otherwise it will be stale data
 			if let meta = DependencyManager.shared.walletList.metadata(forAddress: walletMetadata.address) {
@@ -365,7 +365,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		}
 		
-		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")) { [weak self] action in
+		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4"))) { [weak self] action in
 			
 			vc.showLoadingView()
 			AccountsViewModel.askToConnectToLedgerIfNeeded(walletMetadata: walletMetadata) { success in
@@ -389,7 +389,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		}
 		
-		let customPath = UIAction(title: "Add Custom Path", image: UIImage(named: "CustomPath")) { [weak self] action in
+		let customPath = UIAction(title: "Add Custom Path", image: UIImage(named: "CustomPath")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4"))) { [weak self] action in
 			
 			// Fetch from store, otherwise it will be stale data
 			if let meta = DependencyManager.shared.walletList.metadata(forAddress: walletMetadata.address) {
@@ -397,7 +397,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		}
 		
-		let migrateLedger = UIAction(title: "Migrate To New Device", image: UIImage(named: "WalletLedgerMenu")) { [weak self] action in
+		let migrateLedger = UIAction(title: "Migrate To New Device", image: UIImage(named: "WalletLedgerMenu")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4"))) { [weak self] action in
 			
 			// Fetch from store, otherwise it will be stale data
 			if let meta = DependencyManager.shared.walletList.metadata(forAddress: walletMetadata.address) {
@@ -405,7 +405,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		}
 		
-		let remove = UIAction(title: "Remove Wallet", image: UIImage(named: "Delete")) { [weak self] action in
+		let remove = UIAction(title: "Remove Wallet", image: UIImage(named: "Delete"), attributes: .destructive) { [weak self] action in
 			
 			// Fetch from store, otherwise it will be stale data
 			if let meta = DependencyManager.shared.walletList.metadata(forAddress: walletMetadata.address) {
@@ -413,15 +413,14 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		}
 		
-		
 		// Add different options depending on type of wallet
-		var options: [[UIAction]] = [[edit, addAccount]]
+		var children: [UIAction] = [edit, addAccount]
 		if walletMetadata.type == .ledger {
-			options[0].append(contentsOf: [customPath, migrateLedger])
+			children.append(contentsOf: [customPath, migrateLedger])
 		}
+		children.append(remove)
 		
-		options[0].append(remove)
-		return MenuViewController(actions: options, header: walletMetadata.hdWalletGroupName, alertStyleIndexes: [IndexPath(row: options[0].count-1, section: 0)], sourceViewController: vc)
+		return UIMenu(title: walletMetadata.hdWalletGroupName ?? "", children: children)
 	}
 	
 	func pullToRefresh(animate: Bool) {
@@ -469,9 +468,10 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			topMostVc = modal
 		}
 		
-		if let menu = topMostVc as? MenuViewController, let parent = menu.presentingViewController {
+		// TODO: need to test ledger
+		/*if let menu = topMostVc as? UIMenu, let parent = menu.presentingViewController {
 			topMostVc = parent
-		}
+		}*/
 		
 		guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? LedgerWallet else {
 			rootVc.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
