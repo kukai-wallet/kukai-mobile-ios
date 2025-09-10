@@ -86,7 +86,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var isVisible = false
 	var forceRefresh = false
 	var tokensToDisplay: [Token] = []
-	var balancesMenuVC: MenuViewController? = nil
+	var balancesMenuVC: UIMenu? = nil
 	var estimatedTotalCellDelegate: EstimatedTotalCellDelegate? = nil
 	
 	weak var tableViewButtonDelegate: UITableViewCellButtonDelegate? = nil
@@ -155,8 +155,8 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			} else if let _ = item.base as? UpdateWarningCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "UpdateWarningCell", for: indexPath) as? UpdateWarningCell {
 				return cell
 				
-			} else if let obj = item.base as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
-				cell.setup(menuVC: obj)
+			} else if let obj = item.base as? UIMenu, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
+				cell.setup(menu: obj)
 				return cell
 				
 			} else if let amount = item.base as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {

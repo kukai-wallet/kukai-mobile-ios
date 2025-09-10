@@ -23,7 +23,6 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFea
 		super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
-		viewModel.menu = MenuViewController(actions: [], header: nil, sourceViewController: self)
 		viewModel.makeDataSource(withTableView: tableView)
 		viewModel.featuredDelegate = self
 		

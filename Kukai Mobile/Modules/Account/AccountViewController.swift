@@ -122,17 +122,17 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		}
 	}
 	
-	func menuVCForBalancesMore() -> MenuViewController {
+	func menuVCForBalancesMore() -> UIMenu {
 		let actions: [UIAction] = [
-			UIAction(title: "Favorites", image: UIImage(named: "FavoritesOn")?.resizedImage(size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
+			UIAction(title: "Favorites", image: UIImage(named: "FavoritesOn")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "favourites", sender: nil)
 			}),
-			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOff")?.resizedImage(size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
+			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOff")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "hidden", sender: nil)
 			}),
 		]
 		
-		return MenuViewController(actions: [actions], header: nil, sourceViewController: self)
+		return UIMenu(title: "", children: actions)
 	}
 	
 	func totalEstiamtedInfoTapped() {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24093.8" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jPJ-eK-beO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24127" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jPJ-eK-beO">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24053.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -327,9 +327,6 @@
                                                             <color key="value" name="BGB4"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="moreTapped:" destination="c9F-pE-jDL" eventType="touchUpInside" id="kKw-O3-vda"/>
-                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1419,8 +1416,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="Favorites" id="OCO-3e-PEt">
                         <barButtonItem key="rightBarButtonItem" id="hB1-3G-mYk">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="iDV-Y8-Bqa">
-                                <rect key="frame" x="321" y="4.0000000000000009" width="52" height="36"/>
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="iDV-Y8-Bqa">
+                                <rect key="frame" x="321" y="7.5000000000000018" width="52" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                 <color key="tintColor" name="Brand1000"/>
@@ -1437,6 +1434,7 @@
                     <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="reOrderButton" destination="iDV-Y8-Bqa" id="ZGm-j3-o4v"/>
+                        <outlet property="reOrderContainer" destination="hB1-3G-mYk" id="MhM-r0-hBj"/>
                         <outlet property="tableView" destination="oRe-e5-5oV" id="Bb6-hl-JqF"/>
                     </connections>
                 </viewController>
@@ -1553,7 +1551,7 @@
                     <navigationItem key="navigationItem" id="93d-eq-YzC">
                         <rightBarButtonItems>
                             <barButtonItem id="Jud-gx-5X0">
-                                <view key="customView" contentMode="scaleToFill" misplaced="YES" id="eXf-SE-4vb">
+                                <view key="customView" contentMode="scaleToFill" ambiguous="YES" id="eXf-SE-4vb">
                                     <rect key="frame" x="333" y="4.0000000000000009" width="40" height="36"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
@@ -1593,8 +1591,8 @@
                                 </view>
                             </barButtonItem>
                             <barButtonItem id="6Mp-UQ-Trq">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="dQs-Hg-Uq3" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                    <rect key="frame" x="281" y="10" width="36" height="24"/>
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="dQs-Hg-Uq3" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <rect key="frame" x="281" y="15" width="36" height="14"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="30" id="4SY-81-jQo"/>

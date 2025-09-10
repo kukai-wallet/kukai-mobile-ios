@@ -11,6 +11,7 @@ import Combine
 
 class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 	
+	@IBOutlet weak var reOrderContainer: UIBarButtonItem!
 	@IBOutlet weak var reOrderButton: UIButton!
 	@IBOutlet weak var tableView: UITableView!
 	
@@ -40,7 +41,7 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success:
-					self?.reOrderButton.isHidden = !(self?.viewModel.showReorderButton() ?? false)
+					self?.reOrderContainer.isHidden = !(self?.viewModel.showReorderButton() ?? false)
 			}
 		}
 	}

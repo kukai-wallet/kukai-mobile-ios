@@ -12,19 +12,16 @@ class TokenBalanceHeaderCell: UITableViewCell {
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var moreButton: UIButton!
 	
-	private var menu: MenuViewController? = nil
+	private var menu: UIMenu? = nil
 	
 	override func awakeFromNib() {
         super.awakeFromNib()
     }
 	
-	func setup(menuVC: MenuViewController) {
-		menu = menuVC
-		
+	func setup(menu: UIMenu) {
+		self.menu = menu
+		moreButton.menu = menu
+		moreButton.showsMenuAsPrimaryAction = true
 		moreButton.accessibilityIdentifier = "button-more"
-	}
-	
-	@IBAction func moreTapped(_ sender: UIButton) {
-		menu?.display(attachedTo: sender)
 	}
 }

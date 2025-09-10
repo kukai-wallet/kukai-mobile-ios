@@ -22,7 +22,6 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private static let itemPerSection = 3
 	
 	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
-	var menu: MenuViewController? = nil
 	var isVisible = false
 	var featuredDelegate: DiscoverFeaturedCellDelegate? = nil
 	var expandedSection: Int? = nil
@@ -65,8 +64,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
-			if let obj = item.base as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
-				cell.setup(menuVC: obj)
+			if let _ = item.base as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
 				return cell
 				
 			} else if let obj = item.base as? DiscoverGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverFeaturedCell", for: indexPath) as? DiscoverFeaturedCell {
@@ -132,10 +130,6 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func reloadData(animate: Bool, datasource: UITableViewDiffableDataSource<SectionEnum, CellDataType>) {
-		guard let menu = self.menu else {
-			return
-		}
-		
 		currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		
 		let groups = DependencyManager.shared.discoverService.items
@@ -144,11 +138,11 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		if DependencyManager.shared.currentNetworkType != .mainnet {
 			currentSnapshot.appendSections(Array(0..<groups.count))
-			currentSnapshot.appendItems([.init(GhostnetWarningCellObj()), .init(menu), .init(groups[0])], toSection: 0)
+			currentSnapshot.appendItems([.init(GhostnetWarningCellObj()), .init("Discover"), .init(groups[0])], toSection: 0)
 			
 		} else {
 			currentSnapshot.appendSections(Array(0..<groups.count))
-			currentSnapshot.appendItems([.init(menu), .init(groups[0])], toSection: 0)
+			currentSnapshot.appendItems([.init("Discover"), .init(groups[0])], toSection: 0)
 		}
 		
 		for (index, group) in groups.enumerated() {
