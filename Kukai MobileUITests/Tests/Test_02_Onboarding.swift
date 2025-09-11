@@ -129,7 +129,6 @@ final class Test_02_Onboarding: XCTestCase {
 		sleep(2)
 		Test_02_Onboarding.handleSeedWordVerification(app: app)
 		
-		
 		// App state verification
 		Test_04_Account.waitForInitalLoad(app: app)
 		
@@ -397,7 +396,8 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		app.staticTexts["Create a Wallet"].tap()
 		app.buttons["Use Social"].tap()
-		app.scrollViews.otherElements.staticTexts["Sign in with Apple"].tap()
+		sleep(2)
+		app.buttons["Sign in with Apple"].tap()
 		
 		
 		

@@ -91,7 +91,7 @@ final class Test_04_Account: XCTestCase {
 		
 		// Check if in group mode
 		app.buttons["colelctibles-tap-more"].tap()
-		let groupModeButton = app.popovers.tables.staticTexts["Group Collections"]
+		let groupModeButton = app.buttons["Group Collections"]
 		if groupModeButton.exists {
 			groupModeButton.tap()
 			sleep(2)
@@ -269,7 +269,7 @@ final class Test_04_Account: XCTestCase {
 		sleep(2)
 		
 		app.navigationBars.firstMatch.buttons["button-more"].tap()
-		app.popovers.tables.staticTexts["Hide Token"].tap()
+		app.buttons["Hide Token"].tap()
 		sleep(2)
 		
 		XCTAssert(balanceCells.count == 1, balanceCells.count.description)
@@ -277,12 +277,12 @@ final class Test_04_Account: XCTestCase {
 		
 		// Unhide and check it appears back
 		tablesQuery.buttons["button-more"].tap()
-		app.popovers.tables.staticTexts["View Hidden Tokens"].tap()
+		app.buttons["View Hidden Tokens"].tap()
 		sleep(2)
 		
 		tablesQuery.staticTexts[symbolOfThirdCell].tap()
 		app.navigationBars.firstMatch.buttons["button-more"].tap()
-		app.popovers.tables.staticTexts["Unhide Token"].tap()
+		app.buttons["Unhide Token"].tap()
 		
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)

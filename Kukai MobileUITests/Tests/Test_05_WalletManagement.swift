@@ -36,7 +36,7 @@ final class Test_05_WalletManagement: XCTestCase {
 		sleep(2)
 		
 		app.tables.buttons["accounts-section-header-more"].firstMatch.tap()
-		app.popovers.tables.staticTexts["Add Account"].tap()
+		app.buttons["Add Account"].tap()
 		sleep(2)
 		
 		let newAccountExists = app.tables.staticTexts[testConfig.walletAddress_HD_account_2.truncateTezosAddress()].exists
@@ -70,7 +70,7 @@ final class Test_05_WalletManagement: XCTestCase {
 	
 	private func changeGroupName(to: String, inApp app: XCUIApplication) {
 		app.tables.buttons["accounts-section-header-more"].firstMatch.tap()
-		app.popovers.tables.staticTexts["Edit Name"].tap()
+		app.buttons["Edit Name"].tap()
 		sleep(2)
 		
 		let textField = app.textFields.firstMatch
@@ -204,7 +204,7 @@ final class Test_05_WalletManagement: XCTestCase {
 			let moreButton = moreButtons.element(boundBy: i)
 			moreButton.tap()
 			
-			app.popovers.tables.staticTexts["Remove Wallet"].tap()
+			app.buttons["Remove Wallet"].tap()
 			sleep(2)
 			
 			app.buttons["Remove"].tap()

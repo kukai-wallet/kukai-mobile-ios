@@ -38,7 +38,7 @@ final class Test_06_Collectibles: XCTestCase {
 		// Make sure we are in a good state
 		if app.buttons["Collections"].exists && !app.buttons["All"].exists {
 			app.buttons["colelctibles-tap-more"].tap()
-			app.popovers.tables.staticTexts["Ungroup Collections"].tap()
+			app.buttons["Ungroup Collections"].tap()
 			sleep(2)
 		}
 		
@@ -88,11 +88,11 @@ final class Test_06_Collectibles: XCTestCase {
 		app.navigationBars.firstMatch.buttons["button-more"].tap()
 		sleep(1)
 		
-		app.popovers.tables.staticTexts["Hide Collectible"].tap()
+		app.buttons["Hide Collectible"].tap()
 		sleep(1)
 		
 		app.buttons["colelctibles-tap-more"].tap()
-		app.popovers.tables.staticTexts["View Hidden Tokens"].tap()
+		app.buttons["View Hidden Tokens"].tap()
 		sleep(2)
 		
 		app.tables.staticTexts["Tasty Cookie"].tap()
@@ -100,7 +100,7 @@ final class Test_06_Collectibles: XCTestCase {
 		app.navigationBars.firstMatch.buttons["button-more"].tap()
 		sleep(1)
 		
-		app.popovers.tables.staticTexts["Unhide Collectible"].tap()
+		app.buttons["Unhide Collectible"].tap()
 		sleep(1)
 		
 		SharedHelpers.shared.navigationBack(app: app)
@@ -117,7 +117,7 @@ final class Test_06_Collectibles: XCTestCase {
 		// Test group mode works
 		app.buttons["All"].tap()
 		app.buttons["colelctibles-tap-more"].tap()
-		app.popovers.tables.staticTexts["Group Collections"].tap()
+		app.buttons["Group Collections"].tap()
 		sleep(2)
 		
 		XCTAssert(app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collecibtles-group-icon").count > 0)
@@ -137,7 +137,7 @@ final class Test_06_Collectibles: XCTestCase {
 		
 		// Revert group mode
 		app.buttons["colelctibles-tap-more"].tap()
-		app.popovers.tables.staticTexts["Ungroup Collections"].tap()
+		app.buttons["Ungroup Collections"].tap()
 		sleep(2)
 		
 		XCTAssert(app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collecibtles-large-icon").count > 0)
