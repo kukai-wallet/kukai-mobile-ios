@@ -45,6 +45,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 					// rather than based on message text. Overriding this behaviour globally (hopefully `.info` is only used for messages), as it makes no sense
 					event.fingerprint = [message.formatted]
 					
+					// info messages are meant to track potential issues users are facing by showing spikes in certain activity
+					// Simulator intentionally doing these things will thorw off the numbers
+					#if targetEnvironment(simulator)
+						return nil
+					#endif
+					
 				} else if (event.exceptions?.first?.type == "App Hanging") {
 					// Sentry tracks app hangs by stacktrace, which means in complex threaded code, the same underlying issue might get reported as hundreds of unique errors on the snetry dashboard
 					// Instead overwrite that logic and group them all by app version, so that we can track whether or not version changes improve the situation overall
