@@ -124,6 +124,8 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 		self.tableView.isEditing = true
 		self.navigationItem.title = "Edit Accounts"
 		self.navigationItem.hidesBackButton = true
+		
+		doneButtonContainer.customView?.sizeToFit()
 		self.navigationItem.setRightBarButtonItems([doneButtonContainer], animated: false)
 	}
 	

@@ -60,9 +60,6 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self
 		
-		menu = moreMenu()
-		moreButton.menu = menu
-		moreButton.showsMenuAsPrimaryAction = true
 		
 		let layout = CollectibleDetailLayout()
 		layout.delegate = viewModel
@@ -82,6 +79,9 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 				case .success:
 					//self?.hideLoadingView(completion: nil)
 					self?.setFavState(isFav: self?.viewModel.isFavourited ?? false)
+					self?.menu = self?.moreMenu()
+					self?.moreButton.menu = self?.menu
+					self?.moreButton.showsMenuAsPrimaryAction = true
 			}
 		}
 	}
@@ -204,7 +204,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		
 		if viewModel.isHidden {
 			actions.append(
-				UIAction(title: "Unhide Collectible", image: UIImage(named: "HiddenOff"), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Unhide Collectible", image: UIImage(named: "HiddenOff")?.resizedImage(size: CGSize(width: 26, height: 26))?.withTintColor(.colorNamed("BGB4")), identifier: nil, handler: { [weak self] action in
 					let address = DependencyManager.shared.selectedWalletAddress ?? ""
 					if TokenStateService.shared.removeHidden(forAddress: address, nft: nft) {
 						DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)

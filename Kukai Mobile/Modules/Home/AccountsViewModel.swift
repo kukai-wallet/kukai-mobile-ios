@@ -468,11 +468,6 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			topMostVc = modal
 		}
 		
-		// TODO: need to test ledger
-		/*if let menu = topMostVc as? UIMenu, let parent = menu.presentingViewController {
-			topMostVc = parent
-		}*/
-		
 		guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? LedgerWallet else {
 			rootVc.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
 			completion(false)

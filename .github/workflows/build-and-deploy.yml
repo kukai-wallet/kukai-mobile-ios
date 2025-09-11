@@ -252,151 +252,161 @@ jobs:
           git commit -m "bump version"
           git push origin HEAD
 
-      # Setup and run UITests while Testflight processing is taking place. Skip if /main branch
-      - name: Setup Global Env
-        if: github.ref != 'refs/heads/main'
-        run: |
-          echo "CONFIG_1=${{ secrets.UITEST_CONFIG_1 }}" >> $GITHUB_ENV
-          echo "CONFIG_2=${{ secrets.UITEST_CONFIG_2 }}" >> $GITHUB_ENV
-          echo "CONFIG_3=${{ secrets.UITEST_CONFIG_3 }}" >> $GITHUB_ENV
 
-      - name: Build for testing
-        if: github.ref != 'refs/heads/main'
-        run: |
-          xcodebuild -project "Kukai Mobile.xcodeproj" \
-          -sdk iphonesimulator \
-          -destination '${{ env.TEST_SIMULATOR_VERSION }}' \
-          -scheme "Kukai Mobile Beta" \
-          -configuration Beta \
-          -derivedDataPath $PWD/build-test/ \
-          -enableCodeCoverage YES \
-          build-for-testing
 
-      # Manually upload the dSYM's again incase any issues happen during XCUITests and we want to symbolicate them
-      # XCUITests don't run on an archived build, they run off the xcode version loaded into memory. The dSYM for this is located in the -derivedDataPath supplied above
-      - name: Upload dSYM
-        if: ${{ github.ref != 'refs/heads/main' && (success() || failure()) }}
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        run: |
-          export PATH=/usr/local/bin:$PATH
-          export SENTRY_ORG=kukai
-          export SENTRY_PROJECT=kukai-ios
-          export CUSTOM_DSYM_PATH_TEST="$PWD/build-test/Build/Products/Beta-iphonesimulator/Kukai Mobile.app.dSYM"
+
+
+
+
+
+
+
+
+      # # Setup and run UITests while Testflight processing is taking place. Skip if /main branch
+      # - name: Setup Global Env
+      #   if: github.ref != 'refs/heads/main'
+      #   run: |
+      #     echo "CONFIG_1=${{ secrets.UITEST_CONFIG_1 }}" >> $GITHUB_ENV
+      #     echo "CONFIG_2=${{ secrets.UITEST_CONFIG_2 }}" >> $GITHUB_ENV
+      #     echo "CONFIG_3=${{ secrets.UITEST_CONFIG_3 }}" >> $GITHUB_ENV
+
+      # - name: Build for testing
+      #   if: github.ref != 'refs/heads/main'
+      #   run: |
+      #     xcodebuild -project "Kukai Mobile.xcodeproj" \
+      #     -sdk iphonesimulator \
+      #     -destination '${{ env.TEST_SIMULATOR_VERSION }}' \
+      #     -scheme "Kukai Mobile Beta" \
+      #     -configuration Beta \
+      #     -derivedDataPath $PWD/build-test/ \
+      #     -enableCodeCoverage YES \
+      #     build-for-testing
+
+      # # Manually upload the dSYM's again incase any issues happen during XCUITests and we want to symbolicate them
+      # # XCUITests don't run on an archived build, they run off the xcode version loaded into memory. The dSYM for this is located in the -derivedDataPath supplied above
+      # - name: Upload dSYM
+      #   if: ${{ github.ref != 'refs/heads/main' && (success() || failure()) }}
+      #   env:
+      #     SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      #   run: |
+      #     export PATH=/usr/local/bin:$PATH
+      #     export SENTRY_ORG=kukai
+      #     export SENTRY_PROJECT=kukai-ios
+      #     export CUSTOM_DSYM_PATH_TEST="$PWD/build-test/Build/Products/Beta-iphonesimulator/Kukai Mobile.app.dSYM"
           
-          echo "CUSTOM_DSYM_PATH_TEST: $CUSTOM_DSYM_PATH_TEST"
+      #     echo "CUSTOM_DSYM_PATH_TEST: $CUSTOM_DSYM_PATH_TEST"
           
-          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_TEST" 2>&1 >/dev/null)
+      #     ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_TEST" 2>&1 >/dev/null)
           
-          if [ ! $? -eq 0 ]; then
-          echo "warning: sentry-cli - $ERROR"
-          fi
+      #     if [ ! $? -eq 0 ]; then
+      #     echo "warning: sentry-cli - $ERROR"
+      #     fi
 
-      - name: Run tests on already built project
-        if: github.ref != 'refs/heads/main'
-        run: |
-          xcodebuild -project "Kukai Mobile.xcodeproj" \
-          -sdk iphonesimulator \
-          -destination '${{ env.TEST_SIMULATOR_VERSION }}' \
-          -scheme "Kukai Mobile Beta" \
-          -resultBundlePath TestResults \
-          -configuration Beta \
-          -derivedDataPath $PWD/build-test/ \
-          -enableCodeCoverage YES \
-          test \
-          CONFIG_1="$CONFIG_1" \
-          CONFIG_2="$CONFIG_2" \
-          CONFIG_3="$CONFIG_3"
+      # - name: Run tests on already built project
+      #   if: github.ref != 'refs/heads/main'
+      #   run: |
+      #     xcodebuild -project "Kukai Mobile.xcodeproj" \
+      #     -sdk iphonesimulator \
+      #     -destination '${{ env.TEST_SIMULATOR_VERSION }}' \
+      #     -scheme "Kukai Mobile Beta" \
+      #     -resultBundlePath TestResults \
+      #     -configuration Beta \
+      #     -derivedDataPath $PWD/build-test/ \
+      #     -enableCodeCoverage YES \
+      #     test \
+      #     CONFIG_1="$CONFIG_1" \
+      #     CONFIG_2="$CONFIG_2" \
+      #     CONFIG_3="$CONFIG_3"
 
-      - name: Upload xcresult file
-        if: ${{ (success() || failure()) && github.ref != 'refs/heads/main' }}
-        id: upload_artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: TestResults-${{ github.run_number }}.xcresult
-          path: TestResults.xcresult
+      # - name: Upload xcresult file
+      #   if: ${{ (success() || failure()) && github.ref != 'refs/heads/main' }}
+      #   id: upload_artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: TestResults-${{ github.run_number }}.xcresult
+      #     path: TestResults.xcresult
 
-      # xcresultparser lacked options to strip out lots of unnecessary and verbose information. Slack only needs a handful of pieces of information
-      # If the tests fail, reading the causes from txt in slack is not workable, need the entire .xcresult file to watch the live re-plays
-      # so we use the legacy mode of xcresulttool (since I can't find info on how to get it with the latest versions, due to missing coverage files)
-      # using this we can fetch the number of tests, the number of failed tests, and the code coverage
-      # then we convert those to numbers, normalise the coverage into a percentage, extract the version and build number from the archive
-      # and then we stitch this all together into a slack block-kit message to allow us to add an emoji to make it stand out
-      #
-      # note: previously tried uploading the .xcresults file to slack, but the slack github-runner integration is a nightmare to use.
-      # Some part of the setup wasn't done correctly, but the integration reports no errors or codes, everything just fails silently and you have to guess.
-      # Instead we use a link to the github run artifact, which is fine. No need to have it in two places anyway
-      - name: Report to slack
-        if: ${{ (success() || failure()) && github.ref != 'refs/heads/main' }}
-        run: |
-            number_of_tests_string=$(xcrun xcresulttool get --legacy --path TestResults.xcresult --format json | jq '.metrics.testsCount._value // "0"')
-            number_of_tests_formatted=$(echo "$number_of_tests_string" | tr -d '"')
-            number_of_test_fails_string=$(xcrun xcresulttool get --legacy --path TestResults.xcresult --format json | jq '.metrics.testsFailedCount._value // "0"')
-            number_of_test_fails_formatted=$(echo "$number_of_test_fails_string" | tr -d '"')
+      # # xcresultparser lacked options to strip out lots of unnecessary and verbose information. Slack only needs a handful of pieces of information
+      # # If the tests fail, reading the causes from txt in slack is not workable, need the entire .xcresult file to watch the live re-plays
+      # # so we use the legacy mode of xcresulttool (since I can't find info on how to get it with the latest versions, due to missing coverage files)
+      # # using this we can fetch the number of tests, the number of failed tests, and the code coverage
+      # # then we convert those to numbers, normalise the coverage into a percentage, extract the version and build number from the archive
+      # # and then we stitch this all together into a slack block-kit message to allow us to add an emoji to make it stand out
+      # #
+      # # note: previously tried uploading the .xcresults file to slack, but the slack github-runner integration is a nightmare to use.
+      # # Some part of the setup wasn't done correctly, but the integration reports no errors or codes, everything just fails silently and you have to guess.
+      # # Instead we use a link to the github run artifact, which is fine. No need to have it in two places anyway
+      # - name: Report to slack
+      #   if: ${{ (success() || failure()) && github.ref != 'refs/heads/main' }}
+      #   run: |
+      #       number_of_tests_string=$(xcrun xcresulttool get --legacy --path TestResults.xcresult --format json | jq '.metrics.testsCount._value // "0"')
+      #       number_of_tests_formatted=$(echo "$number_of_tests_string" | tr -d '"')
+      #       number_of_test_fails_string=$(xcrun xcresulttool get --legacy --path TestResults.xcresult --format json | jq '.metrics.testsFailedCount._value // "0"')
+      #       number_of_test_fails_formatted=$(echo "$number_of_test_fails_string" | tr -d '"')
 
-            coverage_percent_string=$(xcrun xcresulttool get --legacy --path TestResults.xcresult --format json | jq '.metrics.totalCoveragePercentage._value // "0"')
-            coverage_clean_value=$(echo "$coverage_percent_string" | sed 's/[^0-9\.]//g')
-            coverage_percentage=$(echo "$coverage_clean_value * 100" | bc -l)
-            coverage_formatted_percentage=$(printf "%.2f%%" "$coverage_percentage")
+      #       coverage_percent_string=$(xcrun xcresulttool get --legacy --path TestResults.xcresult --format json | jq '.metrics.totalCoveragePercentage._value // "0"')
+      #       coverage_clean_value=$(echo "$coverage_percent_string" | sed 's/[^0-9\.]//g')
+      #       coverage_percentage=$(echo "$coverage_clean_value * 100" | bc -l)
+      #       coverage_formatted_percentage=$(printf "%.2f%%" "$coverage_percentage")
             
-            app_version=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleShortVersionString" $PWD/build/Kukai-mobile.xcarchive/Info.plist)
-            app_build=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleVersion" $PWD/build/Kukai-mobile.xcarchive/Info.plist)
+      #       app_version=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleShortVersionString" $PWD/build/Kukai-mobile.xcarchive/Info.plist)
+      #       app_build=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleVersion" $PWD/build/Kukai-mobile.xcarchive/Info.plist)
 
 
-            slack_message_title="Test results for $app_version ($app_build): "
-            slack_message_emoji=""
-            slack_message_body=""
-            if [[ $number_of_test_fails_formatted == 0 ]] 
-            then
-                slack_message_title+="SUCCESS "
-                slack_message_emoji="white_check_mark"
-                slack_message_body+="\n\nNo. Tests: \t$number_of_tests_formatted\n"
-            else
-                slack_message_title+="FAILURE "
-                slack_message_emoji="x"
-                slack_message_body+="\n\nNo. Tests: \t$number_of_tests_formatted\n"
-                slack_message_body+="Failures: \t\t$number_of_test_fails_formatted\n"
-            fi
+      #       slack_message_title="Test results for $app_version ($app_build): "
+      #       slack_message_emoji=""
+      #       slack_message_body=""
+      #       if [[ $number_of_test_fails_formatted == 0 ]] 
+      #       then
+      #           slack_message_title+="SUCCESS "
+      #           slack_message_emoji="white_check_mark"
+      #           slack_message_body+="\n\nNo. Tests: \t$number_of_tests_formatted\n"
+      #       else
+      #           slack_message_title+="FAILURE "
+      #           slack_message_emoji="x"
+      #           slack_message_body+="\n\nNo. Tests: \t$number_of_tests_formatted\n"
+      #           slack_message_body+="Failures: \t\t$number_of_test_fails_formatted\n"
+      #       fi
 
-            slack_message_body+="Coverage: \t${coverage_formatted_percentage}\n"
-
-
+      #       slack_message_body+="Coverage: \t${coverage_formatted_percentage}\n"
 
 
-            curl -0 -v -X POST ${{ secrets.SLACK_INCOMING_WEBHOOK }} \
-            -H "Expect:" \
-            -H 'Content-Type: application/json; charset=utf-8' \
-            --data-raw '
-            {
-                "blocks": [
-                    {
-                        "type": "rich_text",
-                        "elements": [
-                            {
-                                "type": "rich_text_section",
-                                "elements": [
-                                    {
-                                        "type": "text",
-                                        "text": "'"${slack_message_title}"'"
-                                    },
-                                    {
-                                        "type": "emoji",
-                                        "name": "'"${slack_message_emoji}"'"
-                                    },
-                                    {
-                                        "type": "text",
-                                        "text": "'"${slack_message_body}"'"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "section",
-                        "text": {
-                            "type": "mrkdwn",
-                            "text": "Download full file from runner <${{ steps.upload_artifact.outputs.artifact-url }}|Here>"
-                        }
-                    }
-                ]
-            }'
+
+
+      #       curl -0 -v -X POST ${{ secrets.SLACK_INCOMING_WEBHOOK }} \
+      #       -H "Expect:" \
+      #       -H 'Content-Type: application/json; charset=utf-8' \
+      #       --data-raw '
+      #       {
+      #           "blocks": [
+      #               {
+      #                   "type": "rich_text",
+      #                   "elements": [
+      #                       {
+      #                           "type": "rich_text_section",
+      #                           "elements": [
+      #                               {
+      #                                   "type": "text",
+      #                                   "text": "'"${slack_message_title}"'"
+      #                               },
+      #                               {
+      #                                   "type": "emoji",
+      #                                   "name": "'"${slack_message_emoji}"'"
+      #                               },
+      #                               {
+      #                                   "type": "text",
+      #                                   "text": "'"${slack_message_body}"'"
+      #                               }
+      #                           ]
+      #                       }
+      #                   ]
+      #               },
+      #               {
+      #                   "type": "section",
+      #                   "text": {
+      #                       "type": "mrkdwn",
+      #                       "text": "Download full file from runner <${{ steps.upload_artifact.outputs.artifact-url }}|Here>"
+      #                   }
+      #               }
+      #           ]
+      #       }'
