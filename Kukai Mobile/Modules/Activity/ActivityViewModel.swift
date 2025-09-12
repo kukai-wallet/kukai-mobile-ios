@@ -132,28 +132,26 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
-		DispatchQueue.global(qos: .background).async { [weak self] in
-			if self?.expandedIndex != nil {
-				self?.forceRefresh = true
-				self?.expandedIndex = nil
-			}
-			
-			let currentAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-			let confirmed = DependencyManager.shared.activityService.transactionGroups
-			
-			var pending = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender?.address == currentAddress })
-			
-			pending.append(contentsOf: confirmed)
-			pending = pending.sorted { groupLeft, groupRight in
-				return groupLeft.transactions[0].level > groupRight.transactions[0].level
-			}
-			
-			self?.groups = pending
-			self?.loadGroups(animate: animate)
-			
-			DispatchQueue.main.async { [weak self] in
-				self?.state = .success(nil)
-			}
+		if self.expandedIndex != nil {
+			self.forceRefresh = true
+			self.expandedIndex = nil
+		}
+		
+		let currentAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+		let confirmed = DependencyManager.shared.activityService.transactionGroups
+		
+		var pending = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender?.address == currentAddress })
+		
+		pending.append(contentsOf: confirmed)
+		pending = pending.sorted { groupLeft, groupRight in
+			return groupLeft.transactions[0].level > groupRight.transactions[0].level
+		}
+		
+		self.groups = pending
+		self.loadGroups(animate: animate)
+		
+		DispatchQueue.main.async { [weak self] in
+			self?.state = .success(nil)
 		}
 	}
 	
