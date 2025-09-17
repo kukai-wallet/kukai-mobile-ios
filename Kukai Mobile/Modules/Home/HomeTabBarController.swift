@@ -402,9 +402,22 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		var sorted: [UIView] = []
 		if #available(iOS 26.0, *) {
-			sorted = self.tabBar.subviews.first?.subviews.last?.subviews.sorted { lhs, rhs in
+			
+			// iOS 26 appears to have 2 near-identical copies of the tab bar buttons, and the ordering at which they are returned is not defined
+			// Something to do with the liquid glass hover effect I beleive
+			// Best workaround I could find for this issue is that the one we are interested in, all of the text descriptions in the console include a special kind of tintColor. All other info seems identical
+			var subviewsToProcess: [UIView] = []
+			for view in self.tabBar.subviews.first?.subviews ?? [] {
+				if view.subviews.count == 4 && "\(view.subviews.first, default: "")".contains("name = labelColor") {
+					subviewsToProcess = view.subviews
+					break
+				}
+			}
+			
+			sorted = subviewsToProcess.sorted { lhs, rhs in
 				return lhs.frame.origin.x < rhs.frame.origin.x
-			} ?? []
+			}
+			
 			
 		} else {
 			sorted = self.tabBar.subviews.sorted { lhs, rhs in
