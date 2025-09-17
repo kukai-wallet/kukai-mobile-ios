@@ -104,7 +104,9 @@ jobs:
 
       - name: Build and Archive
         if: github.ref != 'refs/heads/main'
-        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
+        run: | 
+          find . -name "*.framework" -exec codesign --remove-signature {} \;
+          xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
 
       # Export .ipa for main or develop
       - name: Export .ipa
