@@ -32,7 +32,7 @@ jobs:
   build_deploy_public_infra:
     if: ${{ vars.USE_SELF_HOSTED == 'false' }}
     name: Deploying to Testflight from public infra
-    runs-on: macos-15
+    runs-on: macos-26
 
     steps:
       - name: Select Xcode version
