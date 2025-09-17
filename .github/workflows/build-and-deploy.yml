@@ -196,9 +196,11 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
 
-      - name: Export .ipa
+      - name: Build and Archive
         if: github.ref != 'refs/heads/main'
-        run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions-Beta.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
+        run: | 
+          find . -name "*.framework" -exec codesign --remove-signature {} \;
+          xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
 
       # Manually upload the dSYM's we care about to sentry, to avoid having annoying tool installed on dev machine
       - name: Upload dSYM
