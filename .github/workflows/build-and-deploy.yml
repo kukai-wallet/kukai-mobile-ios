@@ -17,7 +17,7 @@ on:
 
 env:
   #XCODE_VERSION_PUBLIC: "/Applications/Xcode_16.4.app/Contents/Developer"
-  XCODE_VERSION_PUBLIC: "/Applications/Xcode_26.0.app/Contents/Developer"
+  XCODE_VERSION_PUBLIC: "/Applications/Xcode_26_Release_Candidate.app"
   #XCODE_VERSION_SELF: "/Applications/Xcode.app/Contents/Developer" 
   XCODE_VERSION_SELF: "/Applications/Xcode-beta.app/Contents/Developer"
   #TEST_SIMULATOR_VERSION: "platform=iOS Simulator,name=iPhone 16,OS=18.5"
@@ -179,7 +179,7 @@ jobs:
       - name: Auto update build number
         if: github.ref != 'refs/heads/main'
         run: agvtool next-version -all
-        
+
       # Build and archive for main or develop
       - name: Build and Archive
         if: github.ref == 'refs/heads/main'
