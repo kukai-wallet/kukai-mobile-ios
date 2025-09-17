@@ -179,13 +179,7 @@ jobs:
       - name: Auto update build number
         if: github.ref != 'refs/heads/main'
         run: agvtool next-version -all
-      
-      # 
-      - name: Fix framework issue
-        run: |
-          echo "Removing existing code signatures from embedded frameworks from: " + $PWD
-          find $PWD -name "*.framework" -exec codesign --remove-signature {} \;
-
+        
       # Build and archive for main or develop
       - name: Build and Archive
         if: github.ref == 'refs/heads/main'
