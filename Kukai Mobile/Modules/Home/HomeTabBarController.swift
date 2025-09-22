@@ -426,7 +426,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		}
 		
 		
-		if activityAnimationImageView.superview == nil {
+		if activityAnimationImageView.superview == nil, sorted.count >= 2 {
 			let activitySubview = sorted[sorted.count-2]
 			guard let activityImageView = activitySubview.subviews.first as? UIImageView else { return }
 			activityTabBarImageView = activityImageView
