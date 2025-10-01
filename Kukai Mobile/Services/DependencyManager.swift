@@ -34,6 +34,15 @@ class DependencyManager {
 	static let defaultTezosDomainsURL_ghostnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
 	static let defaultObjktURL_ghostnet = URL(string: "https://data.ghostnet.objkt.com/v3/graphql")!
 	
+	/*
+	static let defaultNodeURLs_shadownet = [URL(string: "https://rpc.shadownet.teztnets.com")!]
+	static let defaultTzktURL_shadownet = URL(string: "https://api.shadownet.tzkt.io")!
+	static let defaultExplorerURL_shadownet = URL(string: "https://shadownet.tzkt.io")!
+	static let defaultBcdURL_shadownet = URL(string: "https://api.better-call.dev")!
+	static let defaultTezosDomainsURL_shadownet = URL(string: "https://shadownet-api.tezos.domains/graphql")!
+	static let defaultObjktURL_shadownet = URL(string: "https://data.shadownet.objkt.com/v3/graphql")!
+	*/
+	
 	static let defaultNodeURLs_protocolnet = [URL(string: "https://rpc.seoulnet.teztnets.com")!]
 	static let defaultTzktURL_protocolnet = URL(string: "https://api.seoulnet.tzkt.io")!
 	static let defaultExplorerURL_protocolnet = URL(string: "https://seoulnet.tzkt.io")!
@@ -55,6 +64,7 @@ class DependencyManager {
 	
 	struct NetworkManagement {
 		static let ghostnetFaucet = URL(string: "https://faucet.ghostnet.teztnets.com/")!
+		static let shadownetFaucet = URL(string: "https://faucet.shadownet.teztnets.com/")!
 		static let protocolnetFaucet = URL(string: "https://faucet.seoulnet.teztnets.com/")!
 		static let nextnetFaucet = URL(string: "https://faucet.nextnet-20250626.teztnets.com/")!
 		
@@ -62,59 +72,22 @@ class DependencyManager {
 			
 			let current = DependencyManager.shared.currentNetworkType
 			
-			if current == .mainnet || current == .ghostnet {
+			if current == .mainnet || current == .ghostnet /*|| current == .shadownet*/ {
 				return current.rawValue.firstUppercased
 			} else {
 				return current.rawValue.firstUppercased + " (\(DependencyManager.shared.tezosNodeClient.networkVersion?.chainName() ?? "..."))"
 			}
 		}
 		
-		/*
-		static func name(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> String? {
-			switch networkType {
-				case .mainnet:
-					return "Mainnet"
-					
-				case .ghostnet:
-					return "Ghostnet"
-					
-				case .protocolnet:
-					return "Protocolnet"
-					
-				case .nextnet:
-					return "Nextnet"
-				
-				case .experimental:
-					return "Experimental"
-			}
-		}
-		*/
-		
-		/*
-		static func protocolName(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> String? {
-			switch networkType {
-				case .ghostnet:
-					return "Rio"
-					
-				case .protocolnet:
-					return "Seoul"
-					
-				case .nextnet:
-					return "S"
-				
-				case .experimental:
-					return "Experimental"
-					
-				default:
-					return nil
-			}
-		}
-		*/
-		
 		static func faucet(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> URL? {
 			switch networkType {
 				case .ghostnet:
 					return ghostnetFaucet
+				
+				/*
+				case .shadownet:
+					return shadownetFaucet
+				 */
 					
 				case .protocolnet:
 					return protocolnetFaucet
@@ -317,6 +290,10 @@ class DependencyManager {
 				currentExplorerURL = DependencyManager.defaultExplorerURL_mainnet
 				currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_mainnet
 				currentObjktURL = DependencyManager.defaultObjktURL_mainnet
+			
+			case .shadownet:
+				// TODO:
+				fatalError("not implemented yet")
 				
 			case .ghostnet:
 				currentNodeURLs = DependencyManager.defaultNodeURLs_ghostnet
