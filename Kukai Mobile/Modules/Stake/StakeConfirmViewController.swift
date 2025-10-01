@@ -71,7 +71,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 			testnetWarningNetworkLabel.text = DependencyManager.NetworkManagement.currentNetworkDisplayName()
 		}
 		
-		// This screen handles Stake, Unstake, and Finalise Unstake, with minimal differences
+		// This screen handles Stake, Unstake, and Finalize Unstake, with minimal differences
 		switch TransactionService.shared.currentTransactionType {
 			case .stake:
 				self.isStake = true
