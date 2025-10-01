@@ -147,7 +147,7 @@ class ActivityItemCell: UITableViewCell, ActivityItemCellProcotol {
 				toLabel.text = "From: "
 				
 			} else if data.subType == .finaliseUnstake {
-				titleLabel.text = "FinaliZe Unstake: \(balanceDsiplay) XTZ"
+				titleLabel.text = "Finalize Unstake: \(balanceDsiplay) XTZ"
 				toLabel.text = "From: "
 			}
 			
