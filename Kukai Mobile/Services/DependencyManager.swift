@@ -34,14 +34,12 @@ class DependencyManager {
 	static let defaultTezosDomainsURL_ghostnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
 	static let defaultObjktURL_ghostnet = URL(string: "https://data.ghostnet.objkt.com/v3/graphql")!
 	
-	/*
 	static let defaultNodeURLs_shadownet = [URL(string: "https://rpc.shadownet.teztnets.com")!]
 	static let defaultTzktURL_shadownet = URL(string: "https://api.shadownet.tzkt.io")!
 	static let defaultExplorerURL_shadownet = URL(string: "https://shadownet.tzkt.io")!
 	static let defaultBcdURL_shadownet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_shadownet = URL(string: "https://shadownet-api.tezos.domains/graphql")!
 	static let defaultObjktURL_shadownet = URL(string: "https://data.shadownet.objkt.com/v3/graphql")!
-	*/
 	
 	static let defaultNodeURLs_protocolnet = [URL(string: "https://rpc.seoulnet.teztnets.com")!]
 	static let defaultTzktURL_protocolnet = URL(string: "https://api.seoulnet.tzkt.io")!
@@ -72,7 +70,7 @@ class DependencyManager {
 			
 			let current = DependencyManager.shared.currentNetworkType
 			
-			if current == .mainnet || current == .ghostnet /*|| current == .shadownet*/ {
+			if current == .mainnet || current == .ghostnet || current == .shadownet {
 				return current.rawValue.firstUppercased
 			} else {
 				return current.rawValue.firstUppercased + " (\(DependencyManager.shared.tezosNodeClient.networkVersion?.chainName() ?? "..."))"
@@ -84,10 +82,8 @@ class DependencyManager {
 				case .ghostnet:
 					return ghostnetFaucet
 				
-				/*
 				case .shadownet:
 					return shadownetFaucet
-				 */
 					
 				case .protocolnet:
 					return protocolnetFaucet
@@ -292,8 +288,11 @@ class DependencyManager {
 				currentObjktURL = DependencyManager.defaultObjktURL_mainnet
 			
 			case .shadownet:
-				// TODO:
-				fatalError("not implemented yet")
+				currentNodeURLs = DependencyManager.defaultNodeURLs_shadownet
+				currentTzktURL = DependencyManager.defaultTzktURL_shadownet
+				currentExplorerURL = DependencyManager.defaultExplorerURL_shadownet
+				currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_shadownet
+				currentObjktURL = DependencyManager.defaultObjktURL_shadownet
 				
 			case .ghostnet:
 				currentNodeURLs = DependencyManager.defaultNodeURLs_ghostnet
