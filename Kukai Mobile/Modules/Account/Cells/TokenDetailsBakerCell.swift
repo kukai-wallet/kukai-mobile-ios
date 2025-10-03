@@ -48,8 +48,9 @@ class TokenDetailsBakerCell: UITableViewCell {
 		if let bakerName = data.bakerName {
 			
 			// If we have baker data
-			bakerIcon.backgroundColor = .white
-			MediaProxyService.load(url: data.bakerIcon, to: bakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
+			MediaProxyService.load(url: data.bakerIcon, to: bakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken()) { [weak self] _ in
+				self?.bakerIcon.backgroundColor = .white
+			}
 			
 			bakerButton.setTitle("Change Baker", for: .normal)
 			regularlyVotesTitle.isHidden = false
@@ -84,10 +85,16 @@ class TokenDetailsBakerCell: UITableViewCell {
 			}
 			
 			
-			freeSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(data.freeSpace, decimalPlaces: 6, includeThousand: true, allowNegative: true, maximumFractionDigits: 0)
-			if data.freeSpace > 0 && data.enoughSpaceForBalance {
+			if data.freeSpace == 0 {
+				freeSpaceValueLabel.text = "-"
 				freeSpaceValueLabel.textColor = .colorNamed("Txt8")
+				
+			} else if data.freeSpace > 0 && data.enoughSpaceForBalance {
+				freeSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(data.freeSpace, decimalPlaces: 6, includeThousand: true, allowNegative: true, maximumFractionDigits: 0)
+				freeSpaceValueLabel.textColor = .colorNamed("Txt8")
+				
 			} else {
+				freeSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(data.freeSpace, decimalPlaces: 6, includeThousand: true, allowNegative: true, maximumFractionDigits: 0)
 				freeSpaceValueLabel.textColor = .colorNamed("TxtAlert4")
 			}
 		} else {
