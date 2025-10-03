@@ -114,8 +114,9 @@ class ActivityItemCell: UITableViewCell, ActivityItemCellProcotol {
 				
 			} else {
 				let url = TzKTClient.avatarURL(forToken: data.newDelegate?.address ?? "")
-				MediaProxyService.load(url: url, to: iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
-				iconView.backgroundColor = .white
+				MediaProxyService.load(url: url, to: iconView, withCacheType: .temporary, fallback: UIImage.unknownToken()) { [weak self] _ in
+					self?.iconView.backgroundColor = .white
+				}
 				iconView.customCornerRadius = 20
 				
 				titleLabel.text = "Delegate"
@@ -131,8 +132,9 @@ class ActivityItemCell: UITableViewCell, ActivityItemCellProcotol {
 			toLabel.isHidden = false
 			
 			let url = TzKTClient.avatarURL(forToken: data.baker?.address ?? "")
-			MediaProxyService.load(url: url, to: iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
-			iconView.backgroundColor = .white
+			MediaProxyService.load(url: url, to: iconView, withCacheType: .temporary, fallback: UIImage.unknownToken()) { [weak self] _ in
+				self?.iconView.backgroundColor = .white
+			}
 			iconView.customCornerRadius = 20
 			
 			let token = data.primaryToken

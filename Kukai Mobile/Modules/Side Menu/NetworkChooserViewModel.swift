@@ -68,7 +68,8 @@ class NetworkChooserViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		snapshot.appendItems([
 			.init(NetworkChoiceObj(title: "Basic", networkType: nil, description: "", isMore: false, isHeading: true)),
 			.init(NetworkChoiceObj(title: "Mainnet", networkType: .mainnet, description: "Live network with real XTZ and Tokens with real values", isMore: false, isHeading: false)),
-			.init(NetworkChoiceObj(title: "Ghostnet", networkType: .ghostnet, description: "A permanent test network running the lastest Tezos protocol, with fake XTZ and tokens with no monetary value", isMore: false, isHeading: false))
+			.init(NetworkChoiceObj(title: "Ghostnet", networkType: .ghostnet, description: "A permanent test network running the lastest Tezos protocol, with fake XTZ and tokens with no monetary value", isMore: false, isHeading: false)),
+			.init(NetworkChoiceObj(title: "Shadownet", networkType: .shadownet, description: "A permanent test network running the lastest Tezos protocol, with fake XTZ and tokens with no monetary value", isMore: false, isHeading: false))
 		], toSection: 0)
 		
 		snapshot.appendItems([

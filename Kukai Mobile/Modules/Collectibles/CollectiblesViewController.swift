@@ -113,6 +113,8 @@ class CollectiblesViewController: UIViewController {
 				
 				self?.segmentedControl.setTitle(isGroupMode ? "All" : "Collections", forSegmentAt: 0)
 				(self?.pageController?.items[0] as? CollectiblesViewControllerChild)?.needsRefreshFromParent()
+
+				self?.moreButton.menu = self?.moreMenu()
 			})
 		]
 		

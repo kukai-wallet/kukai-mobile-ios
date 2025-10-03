@@ -580,6 +580,14 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			onlineXTZFetchGroup.enter()
 			DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate.address) { [weak self] result in
 				guard let res = try? result.get() else {
+					
+					// Some people have custom bakers that don't provide info to TzKT so they come back as null
+					// This results in the UI blocking access to the change baker button for example
+					if result.getFailure().subType.debugDescription.contains("found null") {
+						let settings = TzKTBakerSettings(enabled: false, minBalance: 0, fee: 0, capacity: 0, freeSpace: 0, estimatedApy: 0)
+						self?.baker = TzKTBaker(address: delegate.address, name: nil, status: .unknown, balance: 0, delegation: settings, staking: settings)
+					}
+					
 					self?.onlineXTZFetchGroup.leave()
 					return
 				}
