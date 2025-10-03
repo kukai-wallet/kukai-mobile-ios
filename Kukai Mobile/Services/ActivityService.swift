@@ -94,7 +94,7 @@ public class ActivityService {
 		
 		for group in self.transactionGroups {
 			if group.transactions.count == 1,
-				(group.groupType == .send || group.groupType == .receive),
+			   (group.groupType == .send || group.groupType == .receive || group.groupType == .stake || group.groupType == .unstake || group.groupType == .finaliseUnstake),
 			   (group.primaryToken?.tokenContractAddress == forToken.tokenContractAddress && group.primaryToken?.tokenId == forToken.tokenId && group.primaryToken?.symbol == forToken.symbol) {
 				
 				transactions.append(group)
@@ -112,19 +112,19 @@ public class ActivityService {
 		Logger.app.info("ActivityService: add pending from \(fromWallet.address) with opHash: \(opHash)")
 		let destination = TzKTAddress(alias: destinationAlias, address: destinationAddress)
 		let previousId = pendingTransactionGroups.count == 0 ? (transactionGroups.first?.transactions.first?.id ?? 0) : (pendingTransactionGroups.first?.id ?? 0)
-		var kind: String? = nil
+		var action: String? = nil
 		
 		if parameters?["entrypoint"] == "stake" && destinationAddress == fromWallet.address {
-			kind = "stake"
+			action = "stake"
 			
 		} else if parameters?["entrypoint"] == "unstake" && destinationAddress == fromWallet.address {
-			kind = "unstake"
+			action = "unstake"
 			
 		} else if parameters?["entrypoint"] == "finalize_unstake" && destinationAddress == fromWallet.address {
-			kind = "finalize"
+			action = "finalize"
 		}
 		
-		var transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId + 1, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, destination: destination, xtzAmount: xtzAmount, parameters: parameters, primaryToken: primaryToken, baker: nil, kind: kind)
+		var transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId + 1, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, destination: destination, xtzAmount: xtzAmount, parameters: parameters, primaryToken: primaryToken, baker: nil, action: action)
 		transaction.processAdditionalData(withCurrentWalletAddress: fromWallet.address)
 		
 		if let group = TzKTTransactionGroup(withTransactions: [transaction], currentWalletAddress: fromWallet.address) {
@@ -146,7 +146,7 @@ public class ActivityService {
 		var transactions: [TzKTTransaction] = []
 		for info in batchInfo {
 			previousId += 1
-			var temp = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId, opHash: opHash, type: info.type, counter: counter, fromWallet: fromWallet, destination: info.destination, xtzAmount: info.xtzAmount, parameters: info.parameters, primaryToken: info.primaryToken, baker: nil, kind: nil)
+			var temp = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId, opHash: opHash, type: info.type, counter: counter, fromWallet: fromWallet, destination: info.destination, xtzAmount: info.xtzAmount, parameters: info.parameters, primaryToken: info.primaryToken, baker: nil, action: nil)
 			temp.processAdditionalData(withCurrentWalletAddress: fromWallet.address)
 			
 			transactions.append(temp)
