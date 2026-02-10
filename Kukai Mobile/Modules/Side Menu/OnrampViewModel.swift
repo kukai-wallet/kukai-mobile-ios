@@ -75,8 +75,7 @@ class OnrampViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				buildCoinbaseURL(withBaseURL: baseURLString, andAddress: currentAddress, completion: completion)
 				
 			case "transak":
-				baseURLString = "https://global.transak.com"
-				buildTransakURL(withBaseURL: baseURLString, andAddress: currentAddress, completion: completion)
+				buildTransakURL(andAddress: currentAddress, completion: completion)
 				
 			case "moonpay":
 				baseURLString = "https://buy.moonpay.com"
@@ -107,15 +106,27 @@ class OnrampViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		completion(Result.success(url))
 	}
 	
-	private func buildTransakURL(withBaseURL: String, andAddress address: String, completion: @escaping ((Result<URL, KukaiError>) -> Void)) {
-		let apiKey = "f1336570-699b-4181-9bd1-cdd57206981f" // "3b0e81f3-37dc-41f3-9837-bd8d2c350313" : "f1336570-699b-4181-9bd1-cdd57206981f"
-
-		guard let url = URL(string: "\(withBaseURL)?apiKey=\(apiKey)&cryptoCurrencyCode=XTZ&walletAddressesData={\"coins\":{\"XTZ\":{\"address\":\"\(address)\"}}}&disableWalletAddressForm=true}") else {
+	private func buildTransakURL(andAddress address: String, completion: @escaping ((Result<URL, KukaiError>) -> Void)) {
+		guard let serviceURL = URL(string: "https://services.kukai.app/v1/onramp/transak") else {
 			completion(Result.failure(KukaiError.unknown()))
 			return
 		}
-		
-		completion(Result.success(url))
+
+		let params: [String: Any] = [
+			"cryptoCurrencyCode": "XTZ",
+			"walletAddress": address,
+			"disableWalletAddressForm": true
+		]
+
+		let body = try? JSONSerialization.data(withJSONObject: params)
+		DependencyManager.shared.tezosNodeClient.networkService.request(url: serviceURL, isPOST: true, withBody: body, forReturnType: [String: String].self) { result in
+			guard let res = try? result.get(), let widgetUrl = res["widgetUrl"], let url = URL(string: widgetUrl) else {
+				DispatchQueue.main.async { completion(Result.failure(result.getFailure())) }
+				return
+			}
+
+			DispatchQueue.main.async { completion(Result.success(url)) }
+		}
 	}
 	
 	private func signMoonPayUrl(withBaseURL: String, andAddress address: String, completion: @escaping ((Result<URL, KukaiError>) -> Void)) {
