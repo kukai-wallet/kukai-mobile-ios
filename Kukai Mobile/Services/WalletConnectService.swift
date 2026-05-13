@@ -253,10 +253,12 @@ public class WalletConnectService {
 				return
 			}
 			
+			let requiredChains = proposal.requiredNamespaces["tezos"]?.chains ?? []
+			let optionalChains = proposal.optionalNamespaces?["tezos"]?.chains ?? []
+			let allChains = requiredChains + optionalChains
+
 			guard let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
-				  let namespace = proposal.requiredNamespaces["tezos"],
-				  let chain = namespace.chains?.first,
-				  chain.absoluteString == "tezos:\(tezosChainName)"
+				  allChains.contains(where: { $0.absoluteString == "tezos:\(tezosChainName)" })
 			else {
 				let onDevice = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName().firstUppercased ?? "Unknown"
 				WalletConnectService.rejectCurrentProposal(completion: nil)
@@ -364,17 +366,17 @@ public class WalletConnectService {
 		let supportedMethods = ["tezos_send", "tezos_sign", "tezos_getAccounts"]
 		let supportedEvents: [String] = []
 		
-		let requiredMethods = proposal.requiredNamespaces["tezos"]?.methods.filter({ supportedMethods.contains([$0]) })
-		let optionalMethods = proposal.optionalNamespaces?["tezos"]?.methods.filter({ supportedMethods.contains([$0]) }) ?? []
-		let approvedMethods = requiredMethods?.union( optionalMethods )
-		
-		let requiredEvents = proposal.requiredNamespaces["tezos"]?.events.filter({ supportedEvents.contains([$0]) })
-		let optionalEvents = proposal.optionalNamespaces?["tezos"]?.methods.filter({ supportedEvents.contains([$0]) }) ?? []
-		let approvedEvents = requiredEvents?.union( optionalEvents )
-		
+		let requiredMethods = proposal.requiredNamespaces["tezos"]?.methods ?? []
+		let optionalMethods = proposal.optionalNamespaces?["tezos"]?.methods ?? []
+		let approvedMethods = requiredMethods.union(optionalMethods).filter({ supportedMethods.contains([$0]) })
+
+		let requiredEvents = proposal.requiredNamespaces["tezos"]?.events ?? []
+		let optionalEvents = proposal.optionalNamespaces?["tezos"]?.events ?? []
+		let approvedEvents = requiredEvents.union(optionalEvents).filter({ supportedEvents.contains([$0]) })
+
 		if let wcAccount = Account("tezos:\(network):\(address)") {
 			let accounts = [wcAccount]
-			let sessionNamespace = SessionNamespace(accounts: accounts, methods: approvedMethods ?? [], events: approvedEvents ?? [])
+			let sessionNamespace = SessionNamespace(accounts: accounts, methods: approvedMethods, events: approvedEvents)
 			sessionNamespaces["tezos"] = sessionNamespace
 			
 			return sessionNamespaces
