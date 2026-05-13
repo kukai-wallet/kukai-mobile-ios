@@ -16,6 +16,7 @@ struct NetworkChoiceObj: Hashable {
 	let description: String
 	let isMore: Bool
 	let isHeading: Bool
+	var isDisabled: Bool = false
 }
 
 class NetworkChooserViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
@@ -39,6 +40,7 @@ class NetworkChooserViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			} else if let obj = item.base as? NetworkChoiceObj, !obj.isMore, let cell = tableView.dequeueReusableCell(withIdentifier: "NetworkChoiceCell_single", for: indexPath) as? NetworkChoiceCell {
 				cell.networkLabel.text = obj.title
 				cell.descriptionLabel.text = obj.description
+				cell.contentView.alpha = obj.isDisabled ? 0.4 : 1.0
 				return cell
 				
 			} else if let obj = item.base as? NetworkChoiceObj, obj.isMore, let cell = tableView.dequeueReusableCell(withIdentifier: "NetworkChoiceCell_more", for: indexPath) as? NetworkChoiceCell {
@@ -68,8 +70,8 @@ class NetworkChooserViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		snapshot.appendItems([
 			.init(NetworkChoiceObj(title: "Basic", networkType: nil, description: "", isMore: false, isHeading: true)),
 			.init(NetworkChoiceObj(title: "Mainnet", networkType: .mainnet, description: "Live network with real XTZ and Tokens with real values", isMore: false, isHeading: false)),
-			.init(NetworkChoiceObj(title: "Ghostnet", networkType: .ghostnet, description: "A permanent test network running the lastest Tezos protocol, with fake XTZ and tokens with no monetary value", isMore: false, isHeading: false)),
-			.init(NetworkChoiceObj(title: "Shadownet", networkType: .shadownet, description: "A permanent test network running the lastest Tezos protocol, with fake XTZ and tokens with no monetary value", isMore: false, isHeading: false))
+			.init(NetworkChoiceObj(title: "Shadownet", networkType: .shadownet, description: "A permanent test network running the lastest Tezos protocol, with fake XTZ and tokens with no monetary value", isMore: false, isHeading: false)),
+			.init(NetworkChoiceObj(title: "Ghostnet", networkType: .ghostnet, description: "An older test network that is now replaced by Shadownet. Ghostnet will be removed as an option in a future update", isMore: false, isHeading: false, isDisabled: true))
 		], toSection: 0)
 		
 		snapshot.appendItems([
@@ -91,8 +93,13 @@ class NetworkChooserViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		guard let ds = dataSource else {
 			return nil
 		}
-		
+
 		return (ds.itemIdentifier(for: indexPath)?.base as? NetworkChoiceObj)?.networkType
+	}
+
+	func isDisabled(indexPath: IndexPath) -> Bool {
+		guard let ds = dataSource else { return false }
+		return (ds.itemIdentifier(for: indexPath)?.base as? NetworkChoiceObj)?.isDisabled ?? false
 	}
 	
 	// Figure out selected index, no matter what values are added/changed
