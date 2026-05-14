@@ -46,6 +46,10 @@ class NetworkChooserViewController: UIViewController, UITableViewDelegate {
 	
 	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		guard indexPath.row != 0, let networkType = viewModel.networkTypeFromIndex(indexPath: indexPath) else { return }
+		if viewModel.isDisabled(indexPath: indexPath) {
+			tableView.deselectRow(at: indexPath, animated: false)
+			return
+		}
 		deselectCurrentSelection()
 		
 		viewModel.selectedIndex = indexPath
