@@ -17,7 +17,7 @@ on:
 
 env:
   #XCODE_VERSION_PUBLIC: "/Applications/Xcode_16.4.app/Contents/Developer"
-  XCODE_VERSION_PUBLIC: "/Applications/Xcode_26.0.app/Contents/Developer"
+  XCODE_VERSION_PUBLIC: "/Applications/Xcode_26.0.1.app/Contents/Developer"
   #XCODE_VERSION_SELF: "/Applications/Xcode.app/Contents/Developer" 
   XCODE_VERSION_SELF: "/Applications/Xcode-beta.app/Contents/Developer"
   #TEST_SIMULATOR_VERSION: "platform=iOS Simulator,name=iPhone 16,OS=18.5"
@@ -100,11 +100,11 @@ jobs:
       # Build and archive for main or develop
       - name: Build and Archive
         if: github.ref == 'refs/heads/main'
-        run: xcodebuild -scheme "Kukai Mobile Release" -sdk iphoneos -configuration Release -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
+        run: xcodebuild -scheme "Kukai Mobile Release" -sdk iphoneos -destination 'generic/platform=iOS' -configuration Release -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
 
       - name: Build and Archive
         if: github.ref != 'refs/heads/main'
-        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
+        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -destination 'generic/platform=iOS' -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
 
       # Export .ipa for main or develop
       - name: Export .ipa
@@ -190,11 +190,11 @@ jobs:
       # Build and archive for main or develop
       - name: Build and Archive
         if: github.ref == 'refs/heads/main'
-        run: xcodebuild -scheme "Kukai Mobile Release" -sdk iphoneos -configuration Release -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
+        run: xcodebuild -scheme "Kukai Mobile Release" -sdk iphoneos -destination 'generic/platform=iOS' -configuration Release -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
 
       - name: Build and Archive
         if: github.ref != 'refs/heads/main'
-        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
+        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -destination 'generic/platform=iOS' -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
 
       # Export .ipa for main or develop
       - name: Export .ipa

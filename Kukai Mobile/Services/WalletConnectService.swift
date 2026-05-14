@@ -262,7 +262,7 @@ public class WalletConnectService {
 			else {
 				let onDevice = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName().firstUppercased ?? "Unknown"
 				WalletConnectService.rejectCurrentProposal(completion: nil)
-				self?.delegateErrorOnMain(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
+				self?.delegateErrorOnMain(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to make sure they match", error: nil)
 				completion(false)
 				return
 			}
@@ -288,7 +288,7 @@ public class WalletConnectService {
 			else {
 				WalletConnectService.rejectCurrentRequest(completion: nil)
 				let onDevice = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName().firstUppercased ?? "Unknown"
-				self?.delegateErrorOnMain(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
+				self?.delegateErrorOnMain(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to make sure they match", error: nil)
 				completion(false)
 				return
 			}
