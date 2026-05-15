@@ -23,6 +23,10 @@ class CreatePasscodeViewController: UIViewController {
 		
 		hiddenTextfield.validator = LengthValidator(min: 6, max: 6)
 		hiddenTextfield.validatorTextFieldDelegate = self
+
+		if UIDevice.current.userInterfaceIdiom == .pad {
+			NumericKeypadView.install(in: self, for: hiddenTextfield)
+		}
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
