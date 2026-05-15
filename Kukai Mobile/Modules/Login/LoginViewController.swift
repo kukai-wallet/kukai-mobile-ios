@@ -81,7 +81,11 @@ class LoginViewController: UIViewController {
 		hiddenTextfield.validator = LengthValidator(min: 6, max: 6)
 		hiddenTextfield.validatorTextFieldDelegate = self
 		hiddenTextfield.numericOnly = true
-		
+
+		if UIDevice.current.userInterfaceIdiom == .pad {
+			NumericKeypadView.install(in: self, for: hiddenTextfield)
+		}
+
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
 			if !StorageService.canSkipLogin() {
 				self?.runAuthChecks()

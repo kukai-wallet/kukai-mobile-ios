@@ -228,3 +228,97 @@ extension ValidatorTextField: UITextFieldDelegate {
 		validatorTextFieldDelegate?.textFieldDidEndEditing(textField)
 	}
 }
+
+
+/// On-screen numeric keypad for passcode entry on iPad. Used as a regular subview pinned
+/// to the bottom of the VC's view (not the textfield's `inputView`) because on iPadOS the
+/// system insists on rendering its own keyboard layer for `.numberPad` even when an
+/// `inputView` is set, producing both a popup and a docked keyboard. `install(in:for:)`
+/// disables the textfield so no system keyboard can appear; digit/backspace taps modify
+/// `textField.text` directly and invoke the same validator delegate path as keystrokes.
+public class NumericKeypadView: UIView {
+
+	private weak var targetTextField: ValidatorTextField?
+
+	public static func install(in viewController: UIViewController, for textField: ValidatorTextField) {
+		textField.isEnabled = false
+		let pad = NumericKeypadView(targetTextField: textField)
+		pad.translatesAutoresizingMaskIntoConstraints = false
+		viewController.view.addSubview(pad)
+		NSLayoutConstraint.activate([
+			pad.leadingAnchor.constraint(equalTo: viewController.view.leadingAnchor),
+			pad.trailingAnchor.constraint(equalTo: viewController.view.trailingAnchor),
+			pad.bottomAnchor.constraint(equalTo: viewController.view.safeAreaLayoutGuide.bottomAnchor),
+			pad.heightAnchor.constraint(equalToConstant: 300),
+		])
+	}
+
+	private init(targetTextField: ValidatorTextField) {
+		self.targetTextField = targetTextField
+		super.init(frame: .zero)
+		backgroundColor = .clear
+		let grid = UIStackView()
+		grid.axis = .vertical
+		grid.distribution = .fillEqually
+		grid.spacing = 12
+		grid.translatesAutoresizingMaskIntoConstraints = false
+		addSubview(grid)
+		NSLayoutConstraint.activate([
+			grid.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+			grid.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
+			grid.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+			grid.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
+		])
+		for row in [["1","2","3"], ["4","5","6"], ["7","8","9"], ["","0","⌫"]] {
+			let rowStack = UIStackView()
+			rowStack.axis = .horizontal
+			rowStack.distribution = .fillEqually
+			rowStack.spacing = 12
+			for title in row { rowStack.addArrangedSubview(makeButton(title: title)) }
+			grid.addArrangedSubview(rowStack)
+		}
+	}
+
+	required init?(coder: NSCoder) { fatalError("not implemented") }
+
+	private func makeButton(title: String) -> UIButton {
+		let button = UIButton(type: .system)
+		button.layer.cornerRadius = 10
+		if title.isEmpty {
+			button.isUserInteractionEnabled = false
+			button.isAccessibilityElement = false
+			return button
+		}
+		button.backgroundColor = .secondarySystemBackground
+		button.tintColor = .label
+		button.setTitleColor(.label, for: .normal)
+		if title == "⌫" {
+			button.setImage(UIImage(systemName: "delete.left"), for: .normal)
+			button.accessibilityLabel = "Delete"
+			button.addTarget(self, action: #selector(deleteTapped), for: .touchUpInside)
+		} else {
+			button.setTitle(title, for: .normal)
+			button.titleLabel?.font = .systemFont(ofSize: 28, weight: .regular)
+			button.addTarget(self, action: #selector(digitTapped(_:)), for: .touchUpInside)
+		}
+		return button
+	}
+
+	private func write(_ newText: String) {
+		guard let textField = targetTextField else { return }
+		textField.text = newText
+		let isValid = textField.validator?.validate(text: newText) ?? true
+		textField.isValid = isValid
+		textField.validatorTextFieldDelegate?.validated(isValid, textfield: textField, forText: newText)
+	}
+
+	@objc private func digitTapped(_ sender: UIButton) {
+		guard let digit = sender.title(for: .normal), let current = targetTextField?.text, current.count < 6 else { return }
+		write(current + digit)
+	}
+
+	@objc private func deleteTapped() {
+		guard let current = targetTextField?.text, !current.isEmpty else { return }
+		write(String(current.dropLast()))
+	}
+}
