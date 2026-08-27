@@ -70,7 +70,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public static let minXTZforStakeOnboarding = XTZAmount(fromNormalisedAmount: 3)
 	
 	struct accessibilityIdentifiers {
-		static let onramp = "account-onramp"
 		static let discover = "account-discover"
 		static let qr = "account-receive-qr"
 		static let copy = "account-receive-copy"
@@ -427,7 +426,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		var data = startingData
 		let hashableData: [AnyHashableSendable] = [
 			.init(AccountGettingStartedData()),
-			.init(AccountButtonData(title: "Get Tez (XTZ)", accessibilityId: AccountViewModel.accessibilityIdentifiers.onramp, buttonType: .primary)),
 			.init(AccountReceiveAssetsData()),
 			.init(AccountDiscoverHeaderData()),
 			.init(AccountButtonData(title: "Go to Discover", accessibilityId: AccountViewModel.accessibilityIdentifiers.discover, buttonType: .secondary))

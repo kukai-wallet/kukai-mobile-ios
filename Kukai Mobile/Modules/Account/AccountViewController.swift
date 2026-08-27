@@ -144,14 +144,6 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 	
 	func tableViewCellButtonTapped(sender: UIButton) {
 		switch sender.accessibilityIdentifier {
-			case AccountViewModel.accessibilityIdentifiers.onramp:
-				if DependencyManager.shared.currentNetworkType != .mainnet, let url = DependencyManager.NetworkManagement.faucet() {
-					UIApplication.shared.open(url)
-					
-				} else {
-					self.performSegue(withIdentifier: "onramp", sender: nil)
-				}
-			
 			case AccountViewModel.accessibilityIdentifiers.discover:
 				(self.tabBarController as? HomeTabBarController)?.manuallySetSlectedTab(toIndex: 3)
 				

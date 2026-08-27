@@ -48,28 +48,6 @@ final class Test_09_SideMenu: XCTestCase {
 		Test_04_Account.check(app: app, isDisplayingGhostnetWarning: false)
 		
 		Test_03_Home.handleOpenSideMenu(app: app)
-		sleep(2)
-		
-		// While in mainnet, test onramps display
-		app.buttons["get_xtz"].tap()
-		sleep(1)
-		
-		app.tables.staticTexts["Coinbase"].tap()
-		sleep(2)
-		app.buttons["Done"].firstMatch.tap()
-		
-		app.tables.staticTexts["Transak"].tap()
-		sleep(2)
-		app.buttons["Done"].firstMatch.tap()
-		
-		app.tables.staticTexts["Moonpay"].tap()
-		sleep(2)
-		app.buttons["Done"].firstMatch.tap()
-		
-		SharedHelpers.shared.navigationBack(app: app)
-		sleep(2)
-		
-		Test_03_Home.handleOpenSideMenu(app: app)
 		Test_09_SideMenu.handleSwitchingNetwork(app: app, mainnet: false)
 		Test_04_Account.check(app: app, isDisplayingGhostnetWarning: true)
 		
