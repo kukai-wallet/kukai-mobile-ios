@@ -69,7 +69,6 @@ struct TokenDetailsBalanceData: Hashable, Identifiable {
 }
 
 struct TokenDetailsSendData: Hashable {
-	var isBuyTez: Bool
 	var isDisabled: Bool
 }
 
@@ -174,7 +173,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var chartDataUnsucessful = false
 	var buttonData: TokenDetailsButtonData? = nil
 	var balanceData: TokenDetailsBalanceData? = nil
-	var sendData = TokenDetailsSendData(isBuyTez: false, isDisabled: false)
+	var sendData = TokenDetailsSendData(isDisabled: false)
 	var bakerData: TokenDetailsBakerData? = nil
 	var stakeData: TokenDetailsStakeData? = nil
 	var pendingUnstakes: [PendingUnstakeData] = []
@@ -339,22 +338,25 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		
 		// Immediately load balance, logo, buttons and placeholder chart
 		loadOfflineData(token: token)
-		sendData.isBuyTez = (token.isXTZ() && token.balance == .zero())
+		let hasZeroXTZ = (token.isXTZ() && token.balance == .zero())
 		sendData.isDisabled = isWatchWallet
 		
 		var data: [AnyHashableSendable] = [
 			.init(tokenHeaderData),
 			.init(chartData),
-			.init(balanceData),
-			.init(sendData)
+			.init(balanceData)
 		]
+		
+		if !hasZeroXTZ {
+			data.append(.init(sendData))
+		}
 		
 		if token.isXTZ() {
 			
 			// If XTZ, user has a blance, and we have a delegate set, then we need to fetch more data before displaying anything else
 			// Otherwise if the user has the minimum balance needed, display the stake onboarding
 			if DependencyManager.shared.balanceService.account.delegate != nil {
-				self.needsToLoadOnlineXTZData = !sendData.isBuyTez
+				self.needsToLoadOnlineXTZData = !hasZeroXTZ
 				data.append(.init(onlineDataLoading))
 				
 			} else if token.availableBalance >= AccountViewModel.minXTZforStakeOnboarding {

@@ -24,7 +24,6 @@ class SideMenuViewController: UIViewController {
 	@IBOutlet weak var regularIcon: UIImageView!
 	@IBOutlet weak var regularTitle: UILabel!
 	
-	@IBOutlet weak var getTezButton: CustomisableButton!
 	@IBOutlet weak var copyButton: CustomisableButton!
 	@IBOutlet weak var showQRButton: CustomisableButton!
 	
@@ -41,7 +40,6 @@ class SideMenuViewController: UIViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
 		
-		getTezButton.accessibilityIdentifier = "get_xtz"
 		showQRButton.accessibilityIdentifier = "show_qr"
 		closeButton.accessibilityIdentifier = "side-menu-close-button"
 		
@@ -110,8 +108,6 @@ class SideMenuViewController: UIViewController {
 			regularIcon.image = media.image
 			regularTitle.text = media.title
 		}
-		
-		getTezButton.isEnabled = !wallet.isWatchOnly
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
@@ -181,17 +177,6 @@ class SideMenuViewController: UIViewController {
 	@IBAction func scanTapped(_ sender: Any) {
 		self.closeTapped(sender)
 		self.homeTabBarController?.openScanner()
-	}
-	
-	@IBAction func getTezTapped(_ sender: Any) {
-		self.closeTapped(self)
-		
-		if DependencyManager.shared.currentNetworkType != .mainnet, let url = DependencyManager.NetworkManagement.faucet() {
-			UIApplication.shared.open(url)
-			
-		} else {
-			homeTabBarController?.performSegue(withIdentifier: "side-menu-show-onramp", sender: nil)
-		}
 	}
 	
 	@IBAction func copyTapped(_ sender: UIButton) {
