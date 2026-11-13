@@ -90,7 +90,9 @@
                                                         <constraint firstItem="fSL-04-2kd" firstAttribute="leading" secondItem="5JT-bm-ZMG" secondAttribute="leading" constant="10" id="AwO-0N-wA9"/>
                                                         <constraint firstItem="DEU-hH-MdO" firstAttribute="top" secondItem="kYM-UE-dcX" secondAttribute="bottom" constant="2" id="Gca-Zd-87X"/>
                                                         <constraint firstAttribute="trailing" secondItem="mc4-MV-VSh" secondAttribute="trailing" constant="10" id="OQe-N1-zLE"/>
-                                                        <constraint firstAttribute="bottom" secondItem="fSL-04-2kd" secondAttribute="bottom" constant="12" id="WR7-sf-3NQ"/>
+                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="fSL-04-2kd" secondAttribute="bottom" constant="12" id="WR7-sf-3NQ"/>
+                                                        <constraint firstAttribute="bottom" secondItem="fSL-04-2kd" secondAttribute="bottom" constant="12" priority="250" id="cQ1-Mp-Ab1"/>
+                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="DEU-hH-MdO" secondAttribute="bottom" constant="8" id="cQ2-Mp-Ab2"/>
                                                         <constraint firstItem="fSL-04-2kd" firstAttribute="top" secondItem="5JT-bm-ZMG" secondAttribute="top" constant="12" id="mVL-1r-4A7"/>
                                                         <constraint firstItem="mc4-MV-VSh" firstAttribute="top" secondItem="5JT-bm-ZMG" secondAttribute="top" constant="10" id="rgH-h7-czd"/>
                                                         <constraint firstItem="kYM-UE-dcX" firstAttribute="top" secondItem="fSL-04-2kd" secondAttribute="top" constant="-4" id="s0C-6a-6vG"/>
@@ -122,6 +124,8 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="backUpButton" destination="mc4-MV-VSh" id="Kh8-Pp-K5z"/>
+                                            <outlet property="descriptionLabel" destination="DEU-hH-MdO" id="cQ3-Mp-Ab3"/>
+                                            <outlet property="descriptionToButtonConstraint" destination="s1U-L8-Ta3" id="cQ4-Mp-Ab4"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SuggestedActionCell" rowHeight="97" id="MQP-lj-ygZ" customClass="SuggestedActionCell" customModule="Kukai_Mobile" customModuleProvider="target">

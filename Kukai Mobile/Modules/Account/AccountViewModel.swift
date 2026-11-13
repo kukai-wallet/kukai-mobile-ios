@@ -17,6 +17,7 @@ struct TotalEstimatedValue: Hashable {
 
 struct BackupCellData: Hashable {
 	let id = UUID()
+	var hasAddressWarning = false
 }
 
 struct SuggestedActionData: Hashable {
@@ -79,6 +80,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias CellDataType = AnyHashableSendable
 	
 	private var bag = [AnyCancellable]()
+	private static let addressStatusCache = NSCache<NSString, NSNumber>()
 	
 	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var isPresentedForSelectingToken = false
@@ -144,7 +146,8 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			tableView.register(UINib(nibName: "GhostnetWarningCell", bundle: nil), forCellReuseIdentifier: "GhostnetWarningCell")
 			
-			if let _ = item.base as? BackupCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "BackUpCell", for: indexPath) as? BackUpCell {
+			if let obj = item.base as? BackupCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "BackUpCell", for: indexPath) as? BackUpCell {
+				cell.setup(hasAddressWarning: obj.hasAddressWarning)
 				return cell
 				
 			} else if let obj = item.base as? SuggestedActionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SuggestedActionCell", for: indexPath) as? SuggestedActionCell {
@@ -385,6 +388,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let currentAccount = DependencyManager.shared.balanceService.account
 		let currentAccountTokensCount = (currentAccount.tokens.count + currentAccount.nfts.count)
 		
+		if hasAddressWarning(metadata: metadata) {
+			return .init(BackupCellData(hasAddressWarning: true))
+		}
+		
 		/**
 		 1. Backup warning, most important for security
 		 
@@ -422,8 +429,52 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		return nil
 	}
 	
+	private func hasAddressWarning(metadata: WalletMetadata?) -> Bool {
+		guard let address = metadata?.address, metadata?.isWatchOnly == false, DependencyManager.shared.currentNetworkType == .mainnet else {
+			return false
+		}
+		
+		if let cached = AccountViewModel.addressStatusCache.object(forKey: address as NSString) {
+			return cached.boolValue
+		}
+		
+		fetchAddressStatus(address: address)
+		return false
+	}
+	
+	private struct AddressStatusResponse: Decodable {
+		let value: Bool
+	}
+	
+	private func fetchAddressStatus(address: String) {
+		guard let url = URL(string: "https://services.kukai.app/v1/status?address=\(address)") else {
+			return
+		}
+		
+		DependencyManager.shared.tezosNodeClient.networkService.urlSession.dataTask(with: url) { [weak self] data, _, _ in
+			guard let data = data, let response = try? JSONDecoder().decode(AddressStatusResponse.self, from: data) else {
+				return
+			}
+			
+			AccountViewModel.addressStatusCache.setObject(NSNumber(value: response.value), forKey: address as NSString)
+			
+			if response.value {
+				DispatchQueue.main.async {
+					if self?.isVisible == true && DependencyManager.shared.selectedWalletAddress == address {
+						self?.refresh(animate: true)
+					}
+				}
+			}
+		}.resume()
+	}
+	
 	private func handleRefreshForNewUser(startingData: [AnyHashableSendable], metadata: WalletMetadata?) -> [AnyHashableSendable] {
 		var data = startingData
+		
+		if hasAddressWarning(metadata: metadata) {
+			data.append(.init(BackupCellData(hasAddressWarning: true)))
+		}
+		
 		let hashableData: [AnyHashableSendable] = [
 			.init(AccountGettingStartedData()),
 			.init(AccountReceiveAssetsData()),
@@ -467,7 +518,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func isBackUpCell(atIndexPath: IndexPath) -> Bool {
 		let obj = dataSource?.itemIdentifier(for: atIndexPath)?.base
 		
-		return obj is BackupCellData
+		return (obj as? BackupCellData)?.hasAddressWarning == false
 	}
 	
 	func isUpdateWarningCell(atIndexPath: IndexPath) -> Bool {
