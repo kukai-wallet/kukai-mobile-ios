@@ -622,7 +622,7 @@ public class WalletConnectService {
 				}
 				
 				try await WalletKit.instance.respond(topic: request.topic, requestId: request.id, response: response)
-				try? await WalletKit.instance.extend(topic: request.topic)
+				Task { try? await WalletKit.instance.extend(topic: request.topic) }
 				Logger.app.info("WC approveCurrentRequest success")
 				completion?(true, nil)
 				
